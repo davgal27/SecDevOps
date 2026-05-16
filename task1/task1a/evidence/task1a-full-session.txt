@@ -1,24 +1,0 @@
-Script started on 2026-05-04 21:14:51+02:00 [TERM="xterm-256color" TTY="/dev/pts/2" COLUMNS="94" LINES="45"]
-[?2004h]0;dave@dave-ThinkPad-T14-Gen-1: ~/Documents/Security/task1/task1a[01;32mdave@dave-ThinkPad-T14-Gen-1[00m:[01;34m~/Documents/Security/task1/task1a[00m$ minikube start --driver=docker [A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C
-[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C r[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C r [K[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Ce r[A]0;dave@dave-ThinkPad-T14-Gen-1: ~/Documents/Security/task1/task1a[01;32mdave@dave-ThinkPad-T14-Gen-1[00m:[01;34m~/Documents/Security/task1/task1a[00m$ [C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cr [K[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C
-| tee task1a/evidence/minikube-start.txt
-[?2004ltee: task1a/evidence/minikube-start.txt: No such file or directory
-😄  minikube v1.38.1 on Ubuntu 24.04
-✨  Using the docker driver based on existing profile
-👍  Starting "minikube" primary control-plane node in "minikube" cluster
-🚜  Pulling base image v0.0.50 ...
-🔎  Verifying Kubernetes components...
-    ▪ Using image gcr.io/k8s-minikube/storage-provisioner:v5
-🌟  Enabled addons: storage-provisioner, default-storageclass
-🏄  Done! kubectl is now configured to use "minikube" cluster and "default" namespace by default
-[?2004h]0;dave@dave-ThinkPad-T14-Gen-1: ~/Documents/Security/task1/task1a[01;32mdave@dave-ThinkPad-T14-Gen-1[00m:[01;34m~/Documents/Security/task1/task1a[00m$ ls
-[?2004l[0m[01;34mevidence[0m  [01;34mscripts[0m  [01;34myamls[0m
-[?2004h]0;dave@dave-ThinkPad-T14-Gen-1: ~/Documents/Security/task1/task1a[01;32mdave@dave-ThinkPad-T14-Gen-1[00m:[01;34m~/Documents/Security/task1/task1a[00m$ cd evidence
-[?2004l[?2004h]0;dave@dave-ThinkPad-T14-Gen-1: ~/Documents/Security/task1/task1a/evidence[01;32mdave@dave-ThinkPad-T14-Gen-1[00m:[01;34m~/Documents/Security/task1/task1a/evidence[00m$ ls[K[Kls
-[?2004ltask1a-full-session.txt
-[?2004h]0;dave@dave-ThinkPad-T14-Gen-1: ~/Documents/Security/task1/task1a/evidence[01;32mdave@dave-ThinkPad-T14-Gen-1[00m:[01;34m~/Documents/Security/task1/task1a/evidence[00m$ cd ..
-[?2004l[?2004h]0;dave@dave-ThinkPad-T14-Gen-1: ~/Documents/Security/task1/task1a[01;32mdave@dave-ThinkPad-T14-Gen-1[00m:[01;34m~/Documents/Security/task1/task1a[00m$ cd ..
-[?2004l[?2004h]0;dave@dave-ThinkPad-T14-Gen-1: ~/Documents/Security/task1[01;32mdave@dave-ThinkPad-T14-Gen-1[00m:[01;34m~/Documents/Security/task1[00m$ cd task1a
-[?2004l[?2004h]0;dave@dave-ThinkPad-T14-Gen-1: ~/Documents/Security/task1/task1a[01;32mdave@dave-ThinkPad-T14-Gen-1[00m:[01;34m~/Documents/Security/task1/task1a[00m$ kubectl cluster-info
-[?2004lKubernetes control plane is running at https://192.168.49.2:8443
-CoreDNS is running at ht

@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: fnd-app-user
+  namespace: foodndeliv
+type: kubernetes.io/basic-auth
+stringData:
+  username: myuser
+  password: userpass
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: fnd-db
+  namespace: foodndeliv
+spec:
+  instances: 3
+
+  bootstrap:
+    initdb:
+      database: ordersdb
+      owner: myuser
+      secret:
+        name: fnd-app-user
+
+  storage:
+    size: 1Gi

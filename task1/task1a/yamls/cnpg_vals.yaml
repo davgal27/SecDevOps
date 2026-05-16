@@ -1,0 +1,11 @@
+crds:
+  create: true
+
+replicaCount: 1
+
+monitoring:
+  podMonitorEnabled: false
+  grafanaDashboard:
+    create: false
+
+resources: {}
