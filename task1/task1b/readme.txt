@@ -51,7 +51,7 @@ Files:
 
     Note: this time, set in task1/task1b/app-rw/src/main/resources/application.properties, set spring.jpa.hibernate.ddl-auto=none, so that the existing schema remain.
 
-    The same steps apply regarding building and pushing the docker image for read-write.
+    The same steps apply regarding re-building and re-pushing the docker image for read-write.
 
 5. Re-Deploy Read-Write:
     kubectl rollout restart deployment/fnd-rw
