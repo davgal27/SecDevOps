@@ -2,7 +2,7 @@ FROM eclipse-temurin:17-jre
 
 WORKDIR /app
 COPY target/foodndeliv-0.0.1-SNAPSHOT.jar /app/foodndeliv.jar
-COPY opentelemetry-javaagent.jar /app/opentelemetry-javaagent.jar
+COPY docker/opentelemetry-javaagent.jar /app/opentelemetry-javaagent.jar 
 EXPOSE 8080
 
 ENV JAVA_AGENT=""
@@ -11,7 +11,7 @@ ENV OTEL_METRICS_EXPORTER=none
 ENV OTEL_LOGS_EXPORTER=none
 ENV OTEL_EXPORTER_OTLP_ENDPOINT="http://jaeger-all-in-one-collector:4317"
 ENV OTEL_EXPORTER_OTLP_TRACES_PROTOCOL=grpc
-ENV OTEL_SERVICE_NAME="foodndeliv"
+ENV OTEL_SERVICE_NAME="foodndeliv-ro"
 ENV OTEL_TRACES_SAMPLER="always_on"
 
 ENTRYPOINT ["sh", "-c", "java $JAVA_AGENT -jar foodndeliv.jar"]

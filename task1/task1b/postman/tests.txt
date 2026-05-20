@@ -1,0 +1,502 @@
+Note: For POST orders, there is a section called Headers:
+this refers to headers which were added to the default ones of postman,
+not the full header list. 
+
+READ ONLY TESTS------------------------ 
+
+1) GET customers
+Input:http://localhost:8080/api/customers
+Output: 200 OK
+{
+    "_embedded": {
+        "customers": [
+            {
+                "name": "David",
+                "email": "dave@gmail.com",
+                "state": "ACTIVE",
+                "_links": {
+                    "self": {
+                        "href": "http://localhost:8080/api/customers/1"
+                    },
+                    "customer": {
+                        "href": "http://localhost:8080/api/customers/1"
+                    },
+                    "orders": {
+                        "href": "http://localhost:8080/api/customers/1/orders"
+                    }
+                }
+            }
+        ]
+    },
+    "_links": {
+        "self": {
+            "href": "http://localhost:8080/api/customers?page=0&size=20"
+        },
+        "profile": {
+            "href": "http://localhost:8080/api/profile/customers"
+        },
+        "search": {
+            "href": "http://localhost:8080/api/customers/search"
+        }
+    },
+    "page": {
+        "size": 20,
+        "totalElements": 1,
+        "totalPages": 1,
+        "number": 0
+    }
+}
+
+2) POST customers
+Input: http://localhost:8080/api/customers
+Output: 405 Method Not Allowed 
+{
+    "errors": "Method not allowed",
+    "timestamp": 1779282875519,
+    "status": 405
+}
+Body:
+{
+    "name": "Dave",
+    "email": "dave@gmail.com",
+    "state": "ACTIVE"
+}
+
+3) GET restaurants
+Input: http://localhost:8080/api/restaurants
+Output: 200 OK
+{
+    "_embedded": {
+        "restaurants": []
+    },
+    "_links": {
+        "self": {
+            "href": "http://localhost:8080/api/restaurants?page=0&size=20"
+        },
+        "profile": {
+            "href": "http://localhost:8080/api/profile/restaurants"
+        }
+    },
+    "page": {
+        "size": 20,
+        "totalElements": 0,
+        "totalPages": 0,
+        "number": 0
+    }
+}
+
+4) POST restaurants
+Input:http://localhost:8080/api/restaurants
+Output: 405 Method Not Allowed 
+{
+    "errors": "Method not allowed",
+    "timestamp": 1779282910249,
+    "status": 405
+}
+Body:
+{
+    "name": "restaurant-two",
+    "address": "streetofarestaurant",
+    "state": "OPEN"
+}
+
+5) GET orders
+Input:http://localhost:8080/api/orders/6
+Output: 200 OK
+{
+    "orderDetails": null,
+    "orderLines": [
+        {
+            "productName": "ProductOne",
+            "quantity": 1,
+            "price": 10.0,
+            "_links": {
+                "order": {
+                    "href": "http://localhost:8080/api/orders/6"
+                }
+            }
+        }
+    ],
+    "state": "OPEN",
+    "_links": {
+        "self": {
+            "href": "http://localhost:8080/api/orders/6"
+        },
+        "order": {
+            "href": "http://localhost:8080/api/orders/6"
+        },
+        "customer": {
+            "href": "http://localhost:8080/api/orders/6/customer"
+        },
+        "restaurant": {
+            "href": "http://localhost:8080/api/orders/6/restaurant"
+        }
+    }
+}
+
+6) POST orders
+Input:http://localhost:8080/api/ctrl/orders
+Output: 405 Method Not Allowed 
+{
+    "errors": "Method not allowed",
+    "timestamp": 1779292855295,
+    "status": 405
+}
+Body:
+{
+  "customerId": 1,
+  "restaurantId": 1,
+  "orderDetails": "order two",
+  "orderLines": [
+    {
+      "productName": "Producttwo",
+      "quantity": 1,
+      "price": 10.0
+    }
+  ],
+  "state": "OPEN"
+}
+Headers: added: Key -> X-Custid, Value -> 1
+
+
+7) PATCH customers
+Input:http://localhost:8080/api/customers/1
+Output: 405 Method Not Allowed 
+{
+    "errors": "Method not allowed",
+    "timestamp": 1779292389124,
+    "status": 405
+}
+Body:
+{
+  "email": "updatedcustomer@gmail.com"
+}
+
+8) PUT customers
+Input:http://localhost:8080/api/customers/1
+Output: 405 Method Not Allowed 
+{
+    "errors": "Method not allowed",
+    "timestamp": 1779292404381,
+    "status": 405
+}
+Body:
+{
+  "name": "DavidUpdatedPUT",
+  "email": "updatedPUT@gmail.com",
+  "state": "ACTIVE"
+}
+
+9) DELETE customers
+Input:http://localhost:8080/api/customers/1
+Output: 405 Method Not Allowed 
+{
+    "errors": "Method not allowed",
+    "timestamp": 1779292472994,
+    "status": 405
+}
+
+
+
+
+READ WRITE TESTS -------------------------
+1) GET customers
+Input:http://localhost:8081/api/customers
+Output: 200 OK
+{
+  "_embedded" : {
+    "customers" : [ {
+      "name" : "DavidUpdatedPUT",
+      "email" : "updatedPUT@gmail.com",
+      "state" : "ACTIVE",
+      "_links" : {
+        "self" : {
+          "href" : "http://localhost:8081/api/customers/1"
+        },
+        "customer" : {
+          "href" : "http://localhost:8081/api/customers/1"
+        },
+        "orders" : {
+          "href" : "http://localhost:8081/api/customers/1/orders"
+        }
+      }
+    }, {
+      "name" : "todelete",
+      "email" : "davetodelete@gmail.com",
+      "state" : "ACTIVE",
+      "_links" : {
+        "self" : {
+          "href" : "http://localhost:8081/api/customers/2"
+        },
+        "customer" : {
+          "href" : "http://localhost:8081/api/customers/2"
+        },
+        "orders" : {
+          "href" : "http://localhost:8081/api/customers/2/orders"
+        }
+      }
+    }, {
+      "name" : "test3",
+      "email" : "davetest3@gmail.com",
+      "state" : "ACTIVE",
+      "_links" : {
+        "self" : {
+          "href" : "http://localhost:8081/api/customers/4"
+        },
+        "customer" : {
+          "href" : "http://localhost:8081/api/customers/4"
+        },
+        "orders" : {
+          "href" : "http://localhost:8081/api/customers/4/orders"
+        }
+      }
+    } ]
+  },
+  "_links" : {
+    "self" : {
+      "href" : "http://localhost:8081/api/customers?page=0&size=20"
+    },
+    "profile" : {
+      "href" : "http://localhost:8081/api/profile/customers"
+    },
+    "search" : {
+      "href" : "http://localhost:8081/api/customers/search"
+    }
+  },
+  "page" : {
+    "size" : 20,
+    "totalElements" : 3,
+    "totalPages" : 1,
+    "number" : 0
+  }
+}
+
+2) POST customers
+Input: http://localhost:8081/api/customers
+Output: 201 Created 
+{
+    "name": "test3",
+    "email": "davetest3@gmail.com",
+    "state": "ACTIVE",
+    "_links": {
+        "self": {
+            "href": "http://localhost:8081/api/customers/4"
+        },
+        "customer": {
+            "href": "http://localhost:8081/api/customers/4"
+        },
+        "orders": {
+            "href": "http://localhost:8081/api/customers/4/orders"
+        }
+    }
+}
+Body:
+{
+    "name": "test3",
+    "email": "davetest3@gmail.com",
+    "state": "ACTIVE"
+}
+
+3) GET restaurants
+Input:http://localhost:8081/api/restaurants
+Output: 200 OK 
+{
+    "_embedded": {
+        "restaurants": [
+            {
+                "name": "restaurant-one",
+                "address": "streetofarestaurant",
+                "state": "OPEN",
+                "_links": {
+                    "self": {
+                        "href": "http://localhost:8081/api/restaurants/1"
+                    },
+                    "restaurant": {
+                        "href": "http://localhost:8081/api/restaurants/1"
+                    },
+                    "orders": {
+                        "href": "http://localhost:8081/api/restaurants/1/orders"
+                    }
+                }
+            }
+        ]
+    },
+    "_links": {
+        "self": {
+            "href": "http://localhost:8081/api/restaurants?page=0&size=20"
+        },
+        "profile": {
+            "href": "http://localhost:8081/api/profile/restaurants"
+        }
+    },
+    "page": {
+        "size": 20,
+        "totalElements": 1,
+        "totalPages": 1,
+        "number": 0
+    }
+}
+
+4) POST restaurants
+Input:http://localhost:8081/api/restaurants
+Output: 201 Created
+{
+    "name": "restaurant-one",
+    "address": "streetofarestaurant",
+    "state": "OPEN",
+    "_links": {
+        "self": {
+            "href": "http://localhost:8081/api/restaurants/1"
+        },
+        "restaurant": {
+            "href": "http://localhost:8081/api/restaurants/1"
+        },
+        "orders": {
+            "href": "http://localhost:8081/api/restaurants/1/orders"
+        }
+    }
+}
+Body:
+{
+    "name": "restaurant-one",
+    "address": "streetofarestaurant",
+    "state": "OPEN"
+}
+
+5) GET orders
+Input:http://localhost:8081/api/orders/6
+Output: 200 OK 
+{
+    "orderDetails": null,
+    "orderLines": [
+        {
+            "productName": "ProductOne",
+            "quantity": 1,
+            "price": 10.0,
+            "_links": {
+                "order": {
+                    "href": "http://localhost:8081/api/orders/6"
+                }
+            }
+        }
+    ],
+    "state": "OPEN",
+    "_links": {
+        "self": {
+            "href": "http://localhost:8081/api/orders/6"
+        },
+        "order": {
+            "href": "http://localhost:8081/api/orders/6"
+        },
+        "customer": {
+            "href": "http://localhost:8081/api/orders/6/customer"
+        },
+        "restaurant": {
+            "href": "http://localhost:8081/api/orders/6/restaurant"
+        }
+    }
+}
+
+6) POST orders
+Input:http://localhost:8081/api/ctrl/orders
+Output: 201 Created
+{
+    "id": 6,
+    "customer": {
+        "id": 1,
+        "name": "DavidUpdatedPUT",
+        "email": "updatedPUT@gmail.com",
+        "state": "ACTIVE"
+    },
+    "restaurant": {
+        "id": 1,
+        "name": "restaurant-one",
+        "address": "streetofarestaurant",
+        "state": "OPEN"
+    },
+    "orderDetails": null,
+    "orderLines": [
+        {
+            "productName": "ProductOne",
+            "quantity": 1,
+            "price": 10.0
+        }
+    ],
+    "state": "OPEN",
+    "totalPrice": null
+}
+Body:
+{
+  "customerId": 1,
+  "restaurantId": 1,
+  "orderDetails": "order one again",
+  "orderLines": [
+    {
+      "productName": "ProductOne",
+      "quantity": 1,
+      "price": 10.0
+    }
+  ],
+  "state": "OPEN"
+}
+Headers: added: Key -> X-Custid, Value -> 1
+
+7) PATCH customers
+Input:http://localhost:8081/api/customers/1
+Output: 200 OK
+{
+    "name": "David",
+    "email": "updatedcustomer@gmail.com",
+    "state": "ACTIVE",
+    "_links": {
+        "self": {
+            "href": "http://localhost:8081/api/customers/1"
+        },
+        "customer": {
+            "href": "http://localhost:8081/api/customers/1"
+        },
+        "orders": {
+            "href": "http://localhost:8081/api/customers/1/orders"
+        }
+    }
+}
+Body:
+{
+  "email": "updatedcustomer@gmail.com"
+}
+
+8) PUT customers
+Input:http://localhost:8081/api/customers/1
+Output: 200 OK
+{
+    "name": "DavidUpdatedPUT",
+    "email": "updatedPUT@gmail.com",
+    "state": "ACTIVE",
+    "_links": {
+        "self": {
+            "href": "http://localhost:8081/api/customers/1"
+        },
+        "customer": {
+            "href": "http://localhost:8081/api/customers/1"
+        },
+        "orders": {
+            "href": "http://localhost:8081/api/customers/1/orders"
+        }
+    }
+}
+Body:
+{
+  "name": "DavidUpdatedPUT",
+  "email": "updatedPUT@gmail.com",
+  "state": "ACTIVE"
+}
+
+9) DELETE customers
+Input:http://localhost:8081/api/customers/4
+Output: 405 Method Not Allowed
+{
+    "errors": "Method not allowed",
+    "timestamp": 1779291028419,
+    "status": 405
+}
+

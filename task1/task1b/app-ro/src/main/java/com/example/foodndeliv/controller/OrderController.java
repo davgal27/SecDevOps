@@ -17,12 +17,12 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public OrderResponseDTO createOrder(@RequestBody @Valid OrderRequestDTO orderRequestDTO) {
-        System.out.println("createOrder called");
-        return orderService.createOrder(orderRequestDTO);
-    }
+    // @PostMapping
+    // @ResponseStatus(HttpStatus.CREATED)
+    // public OrderResponseDTO createOrder(@RequestBody @Valid OrderRequestDTO orderRequestDTO) {
+    //     System.out.println("createOrder called");
+    //     return orderService.createOrder(orderRequestDTO);
+    // }
 
     
     @GetMapping

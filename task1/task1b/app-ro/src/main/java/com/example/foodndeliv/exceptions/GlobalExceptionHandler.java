@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import jakarta.persistence.*;
 
+import org.springframework.web.HttpRequestMethodNotSupportedException;
+
 
 import java.util.*;
 
@@ -73,7 +75,19 @@ public class GlobalExceptionHandler {
         response.put("errors", ex.getMessage());
 
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-    }    
+    }
+
+    // Add specific messaging for any illegal HTTP requests (405s were being converted to 400s)
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<Object> handleValidationExceptions(HttpRequestMethodNotSupportedException ex) {
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("timestamp", System.currentTimeMillis());
+        response.put("status", HttpStatus.METHOD_NOT_ALLOWED.value());
+        response.put("errors", "Method not allowed"); 
+
+        return new ResponseEntity<>(response, HttpStatus.METHOD_NOT_ALLOWED);
+    }      
 
     //Filter out any detailed messages - tackle issues with tracing instead
     @ExceptionHandler(Exception.class)

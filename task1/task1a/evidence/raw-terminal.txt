@@ -1,0 +1,294 @@
+dave@dave-ThinkPad-T14-Gen-1:~/Documents/Security/task1/task1a$ minikube start --driver=docker
+😄  minikube v1.38.1 on Ubuntu 24.04
+✨  Using the docker driver based on existing profile
+👍  Starting "minikube" primary control-plane node in "minikube" cluster
+🚜  Pulling base image v0.0.50 ...
+🔄  Restarting existing docker container for "minikube" ...
+🐳  Preparing Kubernetes v1.35.1 on Docker 29.2.1 ...
+🔎  Verifying Kubernetes components...
+    ▪ Using image gcr.io/k8s-minikube/storage-provisioner:v5
+🌟  Enabled addons: default-storageclass, storage-provisioner
+🏄  Done! kubectl is now configured to use "minikube" cluster and "default" namespace by default
+dave@dave-ThinkPad-T14-Gen-1:~/Documents/Security/task1/task1a$ minikube status
+minikube
+type: Control Plane
+host: Running
+kubelet: Running
+apiserver: Running
+kubeconfig: Configured
+
+dave@dave-ThinkPad-T14-Gen-1:~/Documents/Security/task1/task1a$ helm repo add cnpg https://cloudnative-pg.github.io/charts
+helm upgrade --install cnpg \
+--namespace cnpg-system \
+--create-namespace \
+cnpg/cloudnative-pg
+"cnpg" already exists with the same configuration, skipping
+Release "cnpg" does not exist. Installing it now.
+NAME: cnpg
+LAST DEPLOYED: Wed May 20 12:28:29 2026
+NAMESPACE: cnpg-system
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+NOTES:
+CloudNativePG operator should be installed in namespace "cnpg-system".
+You can now create a PostgreSQL cluster with 3 nodes as follows:
+
+cat <<EOF | kubectl apply -f -
+# Example of PostgreSQL cluster
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: cluster-example
+  
+spec:
+  instances: 3
+  storage:
+    size: 1Gi
+EOF
+
+kubectl get -A cluster
+dave@dave-ThinkPad-T14-Gen-1:~/Documents/Security/task1/task1a$ helm list -n cnpg-system
+NAME    NAMESPACE       REVISION        UPDATED                                         STATUS          CHART                      APP VERSION
+cnpg    cnpg-system     1               2026-05-20 12:28:29.038987353 +0200 CEST        deployed        cloudnative-pg-0.28.2      1.29.1     
+dave@dave-ThinkPad-T14-Gen-1:~/Documents/Security/task1/task1a$ kubectl get pods -n cnpg-system
+NAME                                  READY   STATUS    RESTARTS   AGE
+cnpg-cloudnative-pg-f768ffdfb-snxnt   1/1     Running   0          2m23s
+dave@dave-ThinkPad-T14-Gen-1:~/Documents/Security/task1/task1a$ kubectl apply -f yamls/cnpg_cluster.yaml
+secret/app-secret created
+cluster.postgresql.cnpg.io/fnd-db created
+dave@dave-ThinkPad-T14-Gen-1:~/Documents/Security/task1/task1a$ kubectl get pods
+NAME       READY   STATUS    RESTARTS   AGE
+fnd-db-1   1/1     Running   0          70s
+fnd-db-2   1/1     Running   0          51s
+fnd-db-3   1/1     Running   0          34s
+dave@dave-ThinkPad-T14-Gen-1:~/Documents/Security/task1/task1a$ kubectl get cluster
+NAME     AGE    INSTANCES   READY   STATUS                     PRIMARY
+fnd-db   3m6s   3           3       Cluster in healthy state   fnd-db-1
+dave@dave-ThinkPad-T14-Gen-1:~/Documents/Security/task1/task1a$ kubectl get svc
+NAME         TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
+fnd-db-r     ClusterIP   10.99.3.106     <none>        5432/TCP   3m13s
+fnd-db-ro    ClusterIP   10.98.252.128   <none>        5432/TCP   3m13s
+fnd-db-rw    ClusterIP   10.105.200.39   <none>        5432/TCP   3m13s
+kubernetes   ClusterIP   10.96.0.1       <none>        443/TCP    15d
+dave@dave-ThinkPad-T14-Gen-1:~/Documents/Security/task1/task1a$ kubectl get pvc
+NAME       STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE
+fnd-db-1   Bound    pvc-8d554782-6465-4ce9-9d12-68ee38a19662   1Gi        RWO            standard       <unset>                 3m23s
+fnd-db-2   Bound    pvc-cce5fb8c-d276-4dfc-abb8-4d6eceb6b05c   1Gi        RWO            standard       <unset>                 3m5s
+fnd-db-3   Bound    pvc-f63b9206-6b11-4637-ba5f-6bafa0d40b05   1Gi        RWO            standard       <unset>                 2m45s
+dave@dave-ThinkPad-T14-Gen-1:~/Documents/Security/task1/task1a$ kubectl get secret
+NAME                 TYPE                       DATA   AGE
+app-secret           kubernetes.io/basic-auth   2      4m6s
+fnd-db-ca            Opaque                     2      4m6s
+fnd-db-replication   kubernetes.io/tls          2      4m6s
+fnd-db-server        kubernetes.io/tls          2      4m6s
+
+dave@dave-ThinkPad-T14-Gen-1:~/Documents/Security/task1/task1a$ kubectl describe cluster fnd-db
+Name:         fnd-db
+Namespace:    default
+Labels:       <none>
+Annotations:  <none>
+API Version:  postgresql.cnpg.io/v1
+Kind:         Cluster
+Metadata:
+  Creation Timestamp:  2026-05-20T10:31:29Z
+  Generation:          1
+  Resource Version:    180771
+  UID:                 71e4fe40-4e9f-47b9-92a8-406ec498b48a
+Spec:
+  Affinity:
+    Pod Anti Affinity Type:  preferred
+  Bootstrap:
+    Initdb:
+      Database:        ordersdb
+      Encoding:        UTF8
+      Locale C Type:   C
+      Locale Collate:  C
+      Owner:           clusteruser
+      Secret:
+        Name:               app-secret
+  Enable Pdb:               true
+  Enable Superuser Access:  false
+  Failover Delay:           0
+  Image Name:               ghcr.io/cloudnative-pg/postgresql:18.3-system-trixie
+  Instances:                3
+  Log Level:                info
+  Max Sync Replicas:        0
+  Min Sync Replicas:        0
+  Monitoring:
+    Custom Queries Config Map:
+      Key:                    queries
+      Name:                   cnpg-default-monitoring
+    Disable Default Queries:  false
+    Enable Pod Monitor:       false
+  Postgres Gid:               26
+  Postgres UID:               26
+  Postgresql:
+    Parameters:
+      archive_mode:                on
+      archive_timeout:             5min
+      dynamic_shared_memory_type:  posix
+      full_page_writes:            on
+      log_destination:             csvlog
+      log_directory:               /controller/log
+      log_filename:                postgres
+      log_rotation_age:            0
+      log_rotation_size:           0
+      log_truncate_on_rotation:    false
+      logging_collector:           on
+      max_parallel_workers:        32
+      max_replication_slots:       32
+      max_worker_processes:        32
+      shared_memory_type:          mmap
+      shared_preload_libraries:    
+      ssl_max_protocol_version:    TLSv1.3
+      ssl_min_protocol_version:    TLSv1.3
+      wal_keep_size:               512MB
+      wal_level:                   logical
+      wal_log_hints:               on
+      wal_receiver_timeout:        5s
+      wal_sender_timeout:          5s
+    Sync Replica Election Constraint:
+      Enabled:              false
+  Primary Update Method:    restart
+  Primary Update Strategy:  unsupervised
+  Probes:
+    Liveness:
+      Isolation Check:
+        Connection Timeout:  1000
+        Enabled:             true
+        Request Timeout:     1000
+  Replication Slots:
+    High Availability:
+      Enabled:      true
+      Slot Prefix:  _cnpg_
+    Synchronize Replicas:
+      Enabled:        true
+    Update Interval:  30
+  Resources:
+  Smart Shutdown Timeout:  180
+  Start Delay:             3600
+  Stop Delay:              1800
+  Storage:
+    Resize In Use Volumes:  true
+    Size:                   1Gi
+  Switchover Delay:         3600
+Status:
+  Available Architectures:
+    Go Arch:  amd64
+    Hash:     d71c5902ac8868b50eff9fe3fc8ff55910be6bd9715a6a3379d0d0ba0eeadbd8
+    Go Arch:  arm64
+    Hash:     371b687506697bb9e6d3822f96bf58b258093099258987b058b05f80fcbad1ce
+  Certificates:
+    Client Ca Secret:  fnd-db-ca
+    Expirations:
+      Fnd - Db - Ca:           2026-08-18 10:26:29 +0000 UTC
+      Fnd - Db - Replication:  2026-08-18 10:26:29 +0000 UTC
+      Fnd - Db - Server:       2026-08-18 10:26:29 +0000 UTC
+    Replication Tls Secret:    fnd-db-replication
+    Server Alt Dns Names:
+      fnd-db-rw
+      fnd-db-rw.default
+      fnd-db-rw.default.svc
+      fnd-db-rw.default.svc.cluster.local
+      fnd-db-r
+      fnd-db-r.default
+      fnd-db-r.default.svc
+      fnd-db-r.default.svc.cluster.local
+      fnd-db-ro
+      fnd-db-ro.default
+      fnd-db-ro.default.svc
+      fnd-db-ro.default.svc.cluster.local
+    Server Ca Secret:             fnd-db-ca
+    Server Tls Secret:            fnd-db-server
+  Cloud Native Pg Commit Hash:    a4060c152
+  Cloud Native Pg Operator Hash:  d71c5902ac8868b50eff9fe3fc8ff55910be6bd9715a6a3379d0d0ba0eeadbd8
+  Conditions:
+    Last Transition Time:  2026-05-20T10:31:39Z
+    Message:               A single, unique system ID was found across reporting instances.
+    Reason:                Unique
+    Status:                True
+    Type:                  ConsistentSystemID
+    Last Transition Time:  2026-05-20T10:32:23Z
+    Message:               Cluster is Ready
+    Reason:                ClusterIsReady
+    Status:                True
+    Type:                  Ready
+    Last Transition Time:  2026-05-20T10:31:39Z
+    Message:               Continuous archiving is working
+    Reason:                ContinuousArchivingSuccess
+    Status:                True
+    Type:                  ContinuousArchiving
+  Config Map Resource Version:
+    Metrics:
+      Cnpg - Default - Monitoring:  180469
+  Current Primary:                  fnd-db-1
+  Current Primary Timestamp:        2026-05-20T10:31:39.072467Z
+  Healthy Pvc:
+    fnd-db-1
+    fnd-db-2
+    fnd-db-3
+  Image:  ghcr.io/cloudnative-pg/postgresql:18.3-system-trixie
+  Instance Names:
+    fnd-db-1
+    fnd-db-2
+    fnd-db-3
+  Instances:  3
+  Instances Reported State:
+    fnd-db-1:
+      Ip:            10.244.0.39
+      Is Primary:    true
+      Time Line Id:  1
+    fnd-db-2:
+      Ip:            10.244.0.41
+      Is Primary:    false
+      Time Line Id:  1
+    fnd-db-3:
+      Ip:            10.244.0.43
+      Is Primary:    false
+      Time Line Id:  1
+  Instances Status:
+    Healthy:
+      fnd-db-1
+      fnd-db-2
+      fnd-db-3
+  Latest Generated Node:  3
+  Managed Roles Status:
+  Pg Data Image Info:
+    Image:          ghcr.io/cloudnative-pg/postgresql:18.3-system-trixie
+    Major Version:  18
+  Phase:            Cluster in healthy state
+  Pooler Integrations:
+    Pg Bouncer Integration:
+  Pvc Count:        3
+  Read Service:     fnd-db-r
+  Ready Instances:  3
+  Secrets Resource Version:
+    Application Secret Version:  180435
+    Client Ca Secret Version:    180438
+    Replication Secret Version:  180440
+    Server Ca Secret Version:    180438
+    Server Secret Version:       180439
+  Switch Replica Cluster Status:
+  System Id:                 7641919738186985498
+  Target Primary:            fnd-db-1
+  Target Primary Timestamp:  2026-05-20T10:31:29.857184Z
+  Timeline Id:               1
+  Topology:
+    Instances:
+      fnd-db-1:
+      fnd-db-2:
+      fnd-db-3:
+    Nodes Used:              1
+    Successfully Extracted:  true
+  Write Service:             fnd-db-rw
+Events:
+  Type    Reason                       Age    From            Message
+  ----    ------                       ----   ----            -------
+  Normal  CreatingPodDisruptionBudget  4m29s  cloudnative-pg  Creating PodDisruptionBudget fnd-db-primary
+  Normal  CreatingPodDisruptionBudget  4m29s  cloudnative-pg  Creating PodDisruptionBudget fnd-db
+  Normal  CreatingServiceAccount       4m29s  cloudnative-pg  Creating ServiceAccount
+  Normal  CreatingRole                 4m29s  cloudnative-pg  Creating Cluster Role
+  Normal  CreatingInstance             4m29s  cloudnative-pg  Primary instance (initdb)
+  Normal  CreatingInstance             4m11s  cloudnative-pg  Creating instance fnd-db-2
+  Normal  CreatingInstance             3m51s  cloudnative-pg  Creating instance fnd-db-3

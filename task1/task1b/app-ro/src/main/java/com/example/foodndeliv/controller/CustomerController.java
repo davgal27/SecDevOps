@@ -17,18 +17,18 @@ public class CustomerController {
 
 
     
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public CustomerResponseDTO createCustomer(@RequestBody @Valid CustomerRequestDTO customerRequestDTO) {
-        return customerService.createCustomer(customerRequestDTO);
-    }
+    // @PostMapping
+    // @ResponseStatus(HttpStatus.CREATED)
+    // public CustomerResponseDTO createCustomer(@RequestBody @Valid CustomerRequestDTO customerRequestDTO) {
+    //     return customerService.createCustomer(customerRequestDTO);
+    // }
     
     
-    @PutMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public CustomerResponseDTO updateCustomer(@PathVariable Long id, @RequestBody @Valid CustomerUpdateDTO customerUpdateDTO) {
-        System.out.println("updateCustomer called");
-        return customerService.updateCustomer(id, customerUpdateDTO);
-    }
+    // @PutMapping("/{id}")
+    // @ResponseStatus(HttpStatus.OK)
+    // public CustomerResponseDTO updateCustomer(@PathVariable Long id, @RequestBody @Valid CustomerUpdateDTO customerUpdateDTO) {
+    //     System.out.println("updateCustomer called");
+    //     return customerService.updateCustomer(id, customerUpdateDTO);
+    // }
     
 }

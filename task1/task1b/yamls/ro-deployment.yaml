@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fnd-ro
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fnd-ro
+  template:
+    metadata:
+      labels:
+        app: fnd-ro
+    spec:
+      containers:
+        - name: fnd-ro
+          image: davegalea/foodndeliv-ro:task1b
+          imagePullPolicy: Always
+          env:
+            - name: DB_HOST
+              value: fnd-db-ro
+            - name: DB_PORT
+              value: "5432"
+          envFrom:
+            - secretRef:
+                name: db-secret
