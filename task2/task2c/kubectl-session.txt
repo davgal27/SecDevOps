@@ -1,0 +1,1293 @@
+dave@dave-ThinkPad-T14-Gen-1:~/Documents/Security$ kubectl get pod fnd-rw-84559864d4-g9q24 -o yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    kubectl.kubernetes.io/restartedAt: "2026-05-20T15:11:13+02:00"
+  creationTimestamp: "2026-05-20T13:11:13Z"
+  generateName: fnd-rw-84559864d4-
+  generation: 1
+  labels:
+    app: fnd-rw
+    pod-template-hash: 84559864d4
+  name: fnd-rw-84559864d4-g9q24
+  namespace: default
+  ownerReferences:
+  - apiVersion: apps/v1
+    blockOwnerDeletion: true
+    controller: true
+    kind: ReplicaSet
+    name: fnd-rw-84559864d4
+    uid: e5da6e6e-f8a7-483a-b40e-3ed37cfbea33
+  resourceVersion: "297435"
+  uid: 907fc149-a1e8-408f-9299-16a6465ee986
+spec:
+  containers:
+  - env:
+    - name: DB_HOST
+      value: fnd-db-rw
+    - name: DB_PORT
+      value: "5432"
+    envFrom:
+    - secretRef:
+        name: db-secret
+    image: davegalea/foodndeliv-rw:task1b
+    imagePullPolicy: Always
+    name: fnd-rw
+    resources: {}
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-hmmd6
+      readOnly: true
+  dnsPolicy: ClusterFirst
+  enableServiceLinks: true
+  nodeName: minikube
+  preemptionPolicy: PreemptLowerPriority
+  priority: 0
+  restartPolicy: Always
+  schedulerName: default-scheduler
+  securityContext: {}
+  serviceAccount: default
+  serviceAccountName: default
+  terminationGracePeriodSeconds: 30
+  tolerations:
+  - effect: NoExecute
+    key: node.kubernetes.io/not-ready
+    operator: Exists
+    tolerationSeconds: 300
+  - effect: NoExecute
+    key: node.kubernetes.io/unreachable
+    operator: Exists
+    tolerationSeconds: 300
+  volumes:
+  - name: kube-api-access-hmmd6
+    projected:
+      defaultMode: 420
+      sources:
+      - serviceAccountToken:
+          expirationSeconds: 3607
+          path: token
+      - configMap:
+          items:
+          - key: ca.crt
+            path: ca.crt
+          name: kube-root-ca.crt
+      - downwardAPI:
+          items:
+          - fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+            path: namespace
+status:
+  conditions:
+  - lastProbeTime: null
+    lastTransitionTime: "2026-05-24T15:50:58Z"
+    observedGeneration: 1
+    status: "True"
+    type: PodReadyToStartContainers
+  - lastProbeTime: null
+    lastTransitionTime: "2026-05-20T13:11:13Z"
+    observedGeneration: 1
+    status: "True"
+    type: Initialized
+  - lastProbeTime: null
+    lastTransitionTime: "2026-05-24T15:50:58Z"
+    observedGeneration: 1
+    status: "True"
+    type: Ready
+  - lastProbeTime: null
+    lastTransitionTime: "2026-05-24T15:50:58Z"
+    observedGeneration: 1
+    status: "True"
+    type: ContainersReady
+  - lastProbeTime: null
+    lastTransitionTime: "2026-05-20T13:11:13Z"
+    observedGeneration: 1
+    status: "True"
+    type: PodScheduled
+  containerStatuses:
+  - containerID: docker://2081f28d3bddfcb3993b10fff26700f69f4b254bd14eb0c72b603ed530215681
+    image: davegalea/foodndeliv-rw:task1b
+    imageID: docker-pullable://davegalea/foodndeliv-rw@sha256:9f2a2dd7c0eb65c153240e24d628da798a36f5c16af9798d5a994d65ca5b6457
+    lastState:
+      terminated:
+        containerID: docker://ef874a6a897b4405aff86745a853556beb3f2373192234ef6e2c8969b592893f
+        exitCode: 143
+        finishedAt: "2026-05-21T17:07:25Z"
+        reason: Error
+        startedAt: "2026-05-20T13:11:25Z"
+    name: fnd-rw
+    ready: true
+    resources: {}
+    restartCount: 1
+    started: true
+    state:
+      running:
+        startedAt: "2026-05-24T15:50:57Z"
+    volumeMounts:
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-hmmd6
+      readOnly: true
+      recursiveReadOnly: Disabled
+  hostIP: 192.168.49.2
+  hostIPs:
+  - ip: 192.168.49.2
+  observedGeneration: 1
+  phase: Running
+  podIP: 10.244.0.49
+  podIPs:
+  - ip: 10.244.0.49
+  qosClass: BestEffort
+  startTime: "2026-05-20T13:11:13Z"
+===============================
+
+
+
+
+dave@dave-ThinkPad-T14-Gen-1:~/Documents/Security$ kubectl get pod fnd-ro-b67f56765-9wdfg -o yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: "2026-05-20T12:47:18Z"
+  generateName: fnd-ro-b67f56765-
+  generation: 1
+  labels:
+    app: fnd-ro
+    pod-template-hash: b67f56765
+  name: fnd-ro-b67f56765-9wdfg
+  namespace: default
+  ownerReferences:
+  - apiVersion: apps/v1
+    blockOwnerDeletion: true
+    controller: true
+    kind: ReplicaSet
+    name: fnd-ro-b67f56765
+    uid: 3b8b6a20-99db-413e-b320-38b5d2dad4a2
+  resourceVersion: "297444"
+  uid: 80f0df48-63f6-492e-b213-75cb20698e9b
+spec:
+  containers:
+  - env:
+    - name: DB_HOST
+      value: fnd-db-ro
+    - name: DB_PORT
+      value: "5432"
+    envFrom:
+    - secretRef:
+        name: db-secret
+    image: davegalea/foodndeliv-ro:task1b
+    imagePullPolicy: Always
+    name: fnd-ro
+    resources: {}
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-k7n8k
+      readOnly: true
+  dnsPolicy: ClusterFirst
+  enableServiceLinks: true
+  nodeName: minikube
+  preemptionPolicy: PreemptLowerPriority
+  priority: 0
+  restartPolicy: Always
+  schedulerName: default-scheduler
+  securityContext: {}
+  serviceAccount: default
+  serviceAccountName: default
+  terminationGracePeriodSeconds: 30
+  tolerations:
+  - effect: NoExecute
+    key: node.kubernetes.io/not-ready
+    operator: Exists
+    tolerationSeconds: 300
+  - effect: NoExecute
+    key: node.kubernetes.io/unreachable
+    operator: Exists
+    tolerationSeconds: 300
+  volumes:
+  - name: kube-api-access-k7n8k
+    projected:
+      defaultMode: 420
+      sources:
+      - serviceAccountToken:
+          expirationSeconds: 3607
+          path: token
+      - configMap:
+          items:
+          - key: ca.crt
+            path: ca.crt
+          name: kube-root-ca.crt
+      - downwardAPI:
+          items:
+          - fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+            path: namespace
+status:
+  conditions:
+  - lastProbeTime: null
+    lastTransitionTime: "2026-05-24T15:50:59Z"
+    observedGeneration: 1
+    status: "True"
+    type: PodReadyToStartContainers
+  - lastProbeTime: null
+    lastTransitionTime: "2026-05-20T12:47:18Z"
+    observedGeneration: 1
+    status: "True"
+    type: Initialized
+  - lastProbeTime: null
+    lastTransitionTime: "2026-05-24T15:50:59Z"
+    observedGeneration: 1
+    status: "True"
+    type: Ready
+  - lastProbeTime: null
+    lastTransitionTime: "2026-05-24T15:50:59Z"
+    observedGeneration: 1
+    status: "True"
+    type: ContainersReady
+  - lastProbeTime: null
+    lastTransitionTime: "2026-05-20T12:47:18Z"
+    observedGeneration: 1
+    status: "True"
+    type: PodScheduled
+  containerStatuses:
+  - containerID: docker://e99375e9d155165859f674085b1d936004f5c345e8fb1b0b1ec705caf7918da2
+    image: davegalea/foodndeliv-ro:task1b
+    imageID: docker-pullable://davegalea/foodndeliv-ro@sha256:fb0c6a2dd4abeab5502c8e0b4294a5fa3fd23bcb3f8a634187d52312446c91bc
+    lastState:
+      terminated:
+        containerID: docker://06c8603d16e0bd0586217a52c2140afcf05c7dfa63394655ac6fa8296f6c73a1
+        exitCode: 143
+        finishedAt: "2026-05-21T17:07:25Z"
+        reason: Error
+        startedAt: "2026-05-20T12:47:28Z"
+    name: fnd-ro
+    ready: true
+    resources: {}
+    restartCount: 1
+    started: true
+    state:
+      running:
+        startedAt: "2026-05-24T15:50:58Z"
+    volumeMounts:
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-k7n8k
+      readOnly: true
+      recursiveReadOnly: Disabled
+  hostIP: 192.168.49.2
+  hostIPs:
+  - ip: 192.168.49.2
+  observedGeneration: 1
+  phase: Running
+  podIP: 10.244.0.54
+  podIPs:
+  - ip: 10.244.0.54
+  qosClass: BestEffort
+  startTime: "2026-05-20T12:47:18Z"
+
+
+
+
+
+
+
+  dave@dave-ThinkPad-T14-Gen-1:~/Documents/Security$ kubectl get pod fnd-db-1 -o yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    cnpg.io/nodeSerial: "1"
+    cnpg.io/operatorVersion: 1.29.1
+    cnpg.io/podEnvHash: 5c675cc6f
+    cnpg.io/podSpec: '{"volumes":[{"name":"pgdata","persistentVolumeClaim":{"claimName":"fnd-db-1"}},{"name":"scratch-data","emptyDir":{}},{"name":"shm","emptyDir":{"medium":"Memory"}}],"initContainers":[{"name":"bootstrap-controller","image":"ghcr.io/cloudnative-pg/cloudnative-pg:1.29.1","command":["/manager","bootstrap","/controller/manager","--log-level=info"],"resources":{},"volumeMounts":[{"name":"pgdata","mountPath":"/var/lib/postgresql/data"},{"name":"scratch-data","mountPath":"/run"},{"name":"scratch-data","mountPath":"/controller"},{"name":"shm","mountPath":"/dev/shm"}],"securityContext":{"capabilities":{"drop":["ALL"]},"privileged":false,"runAsNonRoot":true,"readOnlyRootFilesystem":true,"allowPrivilegeEscalation":false,"seccompProfile":{"type":"RuntimeDefault"}}}],"containers":[{"name":"postgres","image":"ghcr.io/cloudnative-pg/postgresql:18.3-system-trixie","command":["/controller/manager","instance","run","--status-port-tls","--log-level=info"],"ports":[{"name":"postgresql","containerPort":5432,"protocol":"TCP"},{"name":"metrics","containerPort":9187,"protocol":"TCP"},{"name":"status","containerPort":8000,"protocol":"TCP"}],"env":[{"name":"PGDATA","value":"/var/lib/postgresql/data/pgdata"},{"name":"POD_NAME","value":"fnd-db-1"},{"name":"NAMESPACE","value":"default"},{"name":"CLUSTER_NAME","value":"fnd-db"},{"name":"PSQL_HISTORY","value":"/controller/tmp/.psql_history"},{"name":"PGPORT","value":"5432"},{"name":"PGHOST","value":"/controller/run"},{"name":"TMPDIR","value":"/controller/tmp"}],"resources":{},"volumeMounts":[{"name":"pgdata","mountPath":"/var/lib/postgresql/data"},{"name":"scratch-data","mountPath":"/run"},{"name":"scratch-data","mountPath":"/controller"},{"name":"shm","mountPath":"/dev/shm"}],"livenessProbe":{"httpGet":{"path":"/healthz","port":8000,"scheme":"HTTPS"},"timeoutSeconds":5,"periodSeconds":10},"readinessProbe":{"httpGet":{"path":"/readyz","port":8000,"scheme":"HTTPS"},"timeoutSeconds":5,"periodSeconds":10},"startupProbe":{"httpGet":{"path":"/startupz","port":8000,"scheme":"HTTPS"},"timeoutSeconds":5,"periodSeconds":10,"failureThreshold":360},"securityContext":{"capabilities":{"drop":["ALL"]},"privileged":false,"runAsNonRoot":true,"readOnlyRootFilesystem":true,"allowPrivilegeEscalation":false,"seccompProfile":{"type":"RuntimeDefault"}}}],"terminationGracePeriodSeconds":1800,"serviceAccountName":"fnd-db","securityContext":{"runAsUser":26,"runAsGroup":26,"runAsNonRoot":true,"fsGroup":26,"seccompProfile":{"type":"RuntimeDefault"}},"hostname":"fnd-db-1","affinity":{"podAntiAffinity":{"preferredDuringSchedulingIgnoredDuringExecution":[{"weight":100,"podAffinityTerm":{"labelSelector":{"matchExpressions":[{"key":"cnpg.io/cluster","operator":"In","values":["fnd-db"]},{"key":"cnpg.io/podRole","operator":"In","values":["instance"]}]},"topologyKey":"kubernetes.io/hostname"}}]}}}'
+  creationTimestamp: "2026-05-20T10:31:36Z"
+  generation: 1
+  labels:
+    app.kubernetes.io/component: database
+    app.kubernetes.io/instance: fnd-db
+    app.kubernetes.io/managed-by: cloudnative-pg
+    app.kubernetes.io/name: postgresql
+    app.kubernetes.io/version: "18"
+    cnpg.io/cluster: fnd-db
+    cnpg.io/instanceName: fnd-db-1
+    cnpg.io/instanceRole: replica
+    cnpg.io/podRole: instance
+    role: replica
+  name: fnd-db-1
+  namespace: default
+  ownerReferences:
+  - apiVersion: postgresql.cnpg.io/v1
+    blockOwnerDeletion: true
+    controller: true
+    kind: Cluster
+    name: fnd-db
+    uid: 71e4fe40-4e9f-47b9-92a8-406ec498b48a
+  resourceVersion: "297560"
+  uid: 55a8936a-9e28-4efa-b930-7747cfa7ffec
+spec:
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+            - key: cnpg.io/cluster
+              operator: In
+              values:
+              - fnd-db
+            - key: cnpg.io/podRole
+              operator: In
+              values:
+              - instance
+          topologyKey: kubernetes.io/hostname
+        weight: 100
+  containers:
+  - command:
+    - /controller/manager
+    - instance
+    - run
+    - --status-port-tls
+    - --log-level=info
+    env:
+    - name: PGDATA
+      value: /var/lib/postgresql/data/pgdata
+    - name: POD_NAME
+      value: fnd-db-1
+    - name: NAMESPACE
+      value: default
+    - name: CLUSTER_NAME
+      value: fnd-db
+    - name: PSQL_HISTORY
+      value: /controller/tmp/.psql_history
+    - name: PGPORT
+      value: "5432"
+    - name: PGHOST
+      value: /controller/run
+    - name: TMPDIR
+      value: /controller/tmp
+    image: ghcr.io/cloudnative-pg/postgresql:18.3-system-trixie
+    imagePullPolicy: IfNotPresent
+    livenessProbe:
+      failureThreshold: 3
+      httpGet:
+        path: /healthz
+        port: 8000
+        scheme: HTTPS
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 5
+    name: postgres
+    ports:
+    - containerPort: 5432
+      name: postgresql
+      protocol: TCP
+    - containerPort: 9187
+      name: metrics
+      protocol: TCP
+    - containerPort: 8000
+      name: status
+      protocol: TCP
+    readinessProbe:
+      failureThreshold: 3
+      httpGet:
+        path: /readyz
+        port: 8000
+        scheme: HTTPS
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 5
+    resources: {}
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+        - ALL
+      privileged: false
+      readOnlyRootFilesystem: true
+      runAsNonRoot: true
+      seccompProfile:
+        type: RuntimeDefault
+    startupProbe:
+      failureThreshold: 360
+      httpGet:
+        path: /startupz
+        port: 8000
+        scheme: HTTPS
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 5
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /var/lib/postgresql/data
+      name: pgdata
+    - mountPath: /run
+      name: scratch-data
+    - mountPath: /controller
+      name: scratch-data
+    - mountPath: /dev/shm
+      name: shm
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-6cfq9
+      readOnly: true
+  dnsPolicy: ClusterFirst
+  enableServiceLinks: true
+  hostname: fnd-db-1
+  initContainers:
+  - command:
+    - /manager
+    - bootstrap
+    - /controller/manager
+    - --log-level=info
+    image: ghcr.io/cloudnative-pg/cloudnative-pg:1.29.1
+    imagePullPolicy: IfNotPresent
+    name: bootstrap-controller
+    resources: {}
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+        - ALL
+      privileged: false
+      readOnlyRootFilesystem: true
+      runAsNonRoot: true
+      seccompProfile:
+        type: RuntimeDefault
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /var/lib/postgresql/data
+      name: pgdata
+    - mountPath: /run
+      name: scratch-data
+    - mountPath: /controller
+      name: scratch-data
+    - mountPath: /dev/shm
+      name: shm
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-6cfq9
+      readOnly: true
+  nodeName: minikube
+  preemptionPolicy: PreemptLowerPriority
+  priority: 0
+  restartPolicy: Always
+  schedulerName: default-scheduler
+  securityContext:
+    fsGroup: 26
+    runAsGroup: 26
+    runAsNonRoot: true
+    runAsUser: 26
+    seccompProfile:
+      type: RuntimeDefault
+  serviceAccount: fnd-db
+  serviceAccountName: fnd-db
+  terminationGracePeriodSeconds: 1800
+  tolerations:
+  - effect: NoExecute
+    key: node.kubernetes.io/not-ready
+    operator: Exists
+    tolerationSeconds: 300
+  - effect: NoExecute
+    key: node.kubernetes.io/unreachable
+    operator: Exists
+    tolerationSeconds: 300
+  volumes:
+  - name: pgdata
+    persistentVolumeClaim:
+      claimName: fnd-db-1
+  - emptyDir: {}
+    name: scratch-data
+  - emptyDir:
+      medium: Memory
+    name: shm
+  - name: kube-api-access-6cfq9
+    projected:
+      defaultMode: 420
+      sources:
+      - serviceAccountToken:
+          expirationSeconds: 3607
+          path: token
+      - configMap:
+          items:
+          - key: ca.crt
+            path: ca.crt
+          name: kube-root-ca.crt
+      - downwardAPI:
+          items:
+          - fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+            path: namespace
+status:
+  conditions:
+  - lastProbeTime: null
+    lastTransitionTime: "2026-05-24T15:50:56Z"
+    observedGeneration: 1
+    status: "True"
+    type: PodReadyToStartContainers
+  - lastProbeTime: null
+    lastTransitionTime: "2026-05-20T10:31:38Z"
+    observedGeneration: 1
+    status: "True"
+    type: Initialized
+  - lastProbeTime: null
+    lastTransitionTime: "2026-05-24T15:51:43Z"
+    observedGeneration: 1
+    status: "True"
+    type: Ready
+  - lastProbeTime: null
+    lastTransitionTime: "2026-05-24T15:51:43Z"
+    observedGeneration: 1
+    status: "True"
+    type: ContainersReady
+  - lastProbeTime: null
+    lastTransitionTime: "2026-05-20T10:31:36Z"
+    observedGeneration: 1
+    status: "True"
+    type: PodScheduled
+  containerStatuses:
+  - containerID: docker://455853620bbb48bd1852d9af1d0fcdc38a98f3536ca46311a302173edbf70791
+    image: ghcr.io/cloudnative-pg/postgresql:18.3-system-trixie
+    imageID: docker-pullable://ghcr.io/cloudnative-pg/postgresql@sha256:0f29b435fb501ee534cd0c555d122a6b8e90de477de8e8381c82c5e10d9a9de4
+    lastState:
+      terminated:
+        containerID: docker://511b7c54481c3ee51eb550049df46eec7cdb0e0756d0fe28ca527eb9e45641ca
+        exitCode: 0
+        finishedAt: "2026-05-21T17:07:25Z"
+        reason: Completed
+        startedAt: "2026-05-20T10:31:38Z"
+    name: postgres
+    ready: true
+    resources: {}
+    restartCount: 1
+    started: true
+    state:
+      running:
+        startedAt: "2026-05-24T15:50:56Z"
+    volumeMounts:
+    - mountPath: /var/lib/postgresql/data
+      name: pgdata
+    - mountPath: /run
+      name: scratch-data
+    - mountPath: /controller
+      name: scratch-data
+    - mountPath: /dev/shm
+      name: shm
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-6cfq9
+      readOnly: true
+      recursiveReadOnly: Disabled
+  hostIP: 192.168.49.2
+  hostIPs:
+  - ip: 192.168.49.2
+  initContainerStatuses:
+  - containerID: docker://b91e00f8f861ebffe1d74d4c3cf209a344c54487d03c65aa4d791fa56e130398
+    image: ghcr.io/cloudnative-pg/cloudnative-pg:1.29.1
+    imageID: docker-pullable://ghcr.io/cloudnative-pg/cloudnative-pg@sha256:0dfff19ba7b52ca25851a1010028b6940fff2e233290465af1cfb08a5f3f4661
+    lastState: {}
+    name: bootstrap-controller
+    ready: true
+    resources: {}
+    restartCount: 1
+    started: false
+    state:
+      terminated:
+        containerID: docker://b91e00f8f861ebffe1d74d4c3cf209a344c54487d03c65aa4d791fa56e130398
+        exitCode: 0
+        finishedAt: "2026-05-24T15:50:56Z"
+        reason: Completed
+        startedAt: "2026-05-24T15:50:55Z"
+    volumeMounts:
+    - mountPath: /var/lib/postgresql/data
+      name: pgdata
+    - mountPath: /run
+      name: scratch-data
+    - mountPath: /controller
+      name: scratch-data
+    - mountPath: /dev/shm
+      name: shm
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-6cfq9
+      readOnly: true
+      recursiveReadOnly: Disabled
+  observedGeneration: 1
+  phase: Running
+  podIP: 10.244.0.51
+  podIPs:
+  - ip: 10.244.0.51
+  qosClass: BestEffort
+  startTime: "2026-05-20T10:31:36Z"
+
+
+
+
+
+
+
+
+
+
+dave@dave-ThinkPad-T14-Gen-1:~/Documents/Security$ kubectl get pod fnd-db-2 -o yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    cnpg.io/nodeSerial: "2"
+    cnpg.io/operatorVersion: 1.29.1
+    cnpg.io/podEnvHash: 75fddc8bcb
+    cnpg.io/podSpec: '{"volumes":[{"name":"pgdata","persistentVolumeClaim":{"claimName":"fnd-db-2"}},{"name":"scratch-data","emptyDir":{}},{"name":"shm","emptyDir":{"medium":"Memory"}}],"initContainers":[{"name":"bootstrap-controller","image":"ghcr.io/cloudnative-pg/cloudnative-pg:1.29.1","command":["/manager","bootstrap","/controller/manager","--log-level=info"],"resources":{},"volumeMounts":[{"name":"pgdata","mountPath":"/var/lib/postgresql/data"},{"name":"scratch-data","mountPath":"/run"},{"name":"scratch-data","mountPath":"/controller"},{"name":"shm","mountPath":"/dev/shm"}],"securityContext":{"capabilities":{"drop":["ALL"]},"privileged":false,"runAsNonRoot":true,"readOnlyRootFilesystem":true,"allowPrivilegeEscalation":false,"rofseccompPile":{"type":"RuntimeDefault"}}}],"containers":[{"name":"postgres","image":"ghcr.io/cloudnative-pg/postgresql:18.3-system-trixie","command":["/controller/manager","instance","run","--status-port-tls","--log-level=info"],"ports":[{"name":"postgresql","containerPort":5432,"protocol":"TCP"},{"name":"metrics","containerPort":9187,"protocol":"TCP"},{"name":"status","containerPort":8000,"protocol":"TCP"}],"env":[{"name":"PGDATA","value":"/var/lib/postgresql/data/pgdata"},{"name":"POD_NAME","value":"fnd-db-2"},{"name":"NAMESPACE","value":"default"},{"name":"CLUSTER_NAME","value":"fnd-db"},{"name":"PSQL_HISTORY","value":"/controller/tmp/.psql_history"},{"name":"PGPORT","value":"5432"},{"name":"PGHOST","value":"/controller/run"},{"name":"TMPDIR","value":"/controller/tmp"}],"resources":{},"volumeMounts":[{"name":"pgdata","mountPath":"/var/lib/postgresql/data"},{"name":"scratch-data","mountPath":"/run"},{"name":"scratch-data","mountPath":"/controller"},{"name":"shm","mountPath":"/dev/shm"}],"livenessProbe":{"httpGet":{"path":"/healthz","port":8000,"scheme":"HTTPS"},"timeoutSeconds":5,"periodSeconds":10},"readinessProbe":{"httpGet":{"path":"/readyz","port":8000,"scheme":"HTTPS"},"timeoutSeconds":5,"periodSeconds":10},"startupProbe":{"httpGet":{"path":"/startupz","port":8000,"scheme":"HTTPS"},"timeoutSeconds":5,"periodSeconds":10,"failureThreshold":360},"securityContext":{"capabilities":{"drop":["ALL"]},"privileged":false,"runAsNonRoot":true,"readOnlyRootFilesystem":true,"allowPrivilegeEscalation":false,"seccompProfile":{"type":"RuntimeDefault"}}}],"terminationGracePeriodSeconds":1800,"serviceAccountName":"fnd-db","securityContext":{"runAsUser":26,"runAsGroup":26,"runAsNonRoot":true,"fsGroup":26,"seccompProfile":{"type":"RuntimeDefault"}},"hostname":"fnd-db-2","affinity":{"podAntiAffinity":{"preferredDuringSchedulingIgnoredDuringExecution":[{"weight":100,"podAffinityTerm":{"labelSelector":{"matchExpressions":[{"key":"cnpg.io/cluster","operator":"In","values":["fnd-db"]},{"key":"cnpg.io/podRole","operator":"In","values":["instance"]}]},"topologyKey":"kubernetes.io/hostname"}}]}}}'
+  creationTimestamp: "2026-05-20T10:31:55Z"
+  generation: 1
+  labels:
+    app.kubernetes.io/component: database
+    app.kubernetes.io/instance: fnd-db
+    app.kubernetes.io/managed-by: cloudnative-pg
+    app.kubernetes.io/name: postgresql
+    app.kubernetes.io/version: "18"
+    cnpg.io/cluster: fnd-db
+    cnpg.io/instanceName: fnd-db-2
+    cnpg.io/instanceRole: primary
+    cnpg.io/podRole: instance
+    role: primary
+  name: fnd-db-2
+  namespace: default
+  ownerReferences:
+  - apiVersion: postgresql.cnpg.io/v1
+    blockOwnerDeletion: true
+    controller: true
+    kind: Cluster
+    name: fnd-db
+    uid: 71e4fe40-4e9f-47b9-92a8-406ec498b48a
+  resourceVersion: "297544"
+  uid: 6d760b10-839e-4474-a018-a1c5eb224b67
+spec:
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+            - key: cnpg.io/cluster
+              operator: In
+              values:
+              - fnd-db
+            - key: cnpg.io/podRole
+              operator: In
+              values:
+              - instance
+          topologyKey: kubernetes.io/hostname
+        weight: 100
+  containers:
+  - command:
+    - /controller/manager
+    - instance
+    - run
+    - --status-port-tls
+    - --log-level=info
+    env:
+    - name: PGDATA
+      value: /var/lib/postgresql/data/pgdata
+    - name: POD_NAME
+      value: fnd-db-2
+    - name: NAMESPACE
+      value: default
+    - name: CLUSTER_NAME
+      value: fnd-db
+    - name: PSQL_HISTORY
+      value: /controller/tmp/.psql_history
+    - name: PGPORT
+      value: "5432"
+    - name: PGHOST
+      value: /controller/run
+    - name: TMPDIR
+      value: /controller/tmp
+    image: ghcr.io/cloudnative-pg/postgresql:18.3-system-trixie
+    imagePullPolicy: IfNotPresent
+    livenessProbe:
+      failureThreshold: 3
+      httpGet:
+        path: /healthz
+        port: 8000
+        scheme: HTTPS
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 5
+    name: postgres
+    ports:
+    - containerPort: 5432
+      name: postgresql
+      protocol: TCP
+    - containerPort: 9187
+      name: metrics
+      protocol: TCP
+    - containerPort: 8000
+      name: status
+      protocol: TCP
+    readinessProbe:
+      failureThreshold: 3
+      httpGet:
+        path: /readyz
+        port: 8000
+        scheme: HTTPS
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 5
+    resources: {}
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+        - ALL
+      privileged: false
+      readOnlyRootFilesystem: true
+      runAsNonRoot: true
+      seccompProfile:
+        type: RuntimeDefault
+    startupProbe:
+      failureThreshold: 360
+      httpGet:
+        path: /startupz
+        port: 8000
+        scheme: HTTPS
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 5
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /var/lib/postgresql/data
+      name: pgdata
+    - mountPath: /run
+      name: scratch-data
+    - mountPath: /controller
+      name: scratch-data
+    - mountPath: /dev/shm
+      name: shm
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-k5n7n
+      readOnly: true
+  dnsPolicy: ClusterFirst
+  enableServiceLinks: true
+  hostname: fnd-db-2
+  initContainers:
+  - command:
+    - /manager
+    - bootstrap
+    - /controller/manager
+    - --log-level=info
+    image: ghcr.io/cloudnative-pg/cloudnative-pg:1.29.1
+    imagePullPolicy: IfNotPresent
+    name: bootstrap-controller
+    resources: {}
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+        - ALL
+      privileged: false
+      readOnlyRootFilesystem: true
+      runAsNonRoot: true
+      seccompProfile:
+        type: RuntimeDefault
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /var/lib/postgresql/data
+      name: pgdata
+    - mountPath: /run
+      name: scratch-data
+    - mountPath: /controller
+      name: scratch-data
+    - mountPath: /dev/shm
+      name: shm
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-k5n7n
+      readOnly: true
+  nodeName: minikube
+  preemptionPolicy: PreemptLowerPriority
+  priority: 0
+  restartPolicy: Always
+  schedulerName: default-scheduler
+  securityContext:
+    fsGroup: 26
+    runAsGroup: 26
+    runAsNonRoot: true
+    runAsUser: 26
+    seccompProfile:
+      type: RuntimeDefault
+  serviceAccount: fnd-db
+  serviceAccountName: fnd-db
+  terminationGracePeriodSeconds: 1800
+  tolerations:
+  - effect: NoExecute
+    key: node.kubernetes.io/not-ready
+    operator: Exists
+    tolerationSeconds: 300
+  - effect: NoExecute
+    key: node.kubernetes.io/unreachable
+    operator: Exists
+    tolerationSeconds: 300
+  volumes:
+  - name: pgdata
+    persistentVolumeClaim:
+      claimName: fnd-db-2
+  - emptyDir: {}
+    name: scratch-data
+  - emptyDir:
+      medium: Memory
+    name: shm
+  - name: kube-api-access-k5n7n
+    projected:
+      defaultMode: 420
+      sources:
+      - serviceAccountToken:
+          expirationSeconds: 3607
+          path: token
+      - configMap:
+          items:
+          - key: ca.crt
+            path: ca.crt
+          name: kube-root-ca.crt
+      - downwardAPI:
+          items:
+          - fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+            path: namespace
+status:
+  conditions:
+  - lastProbeTime: null
+    lastTransitionTime: "2026-05-24T15:50:56Z"
+    observedGeneration: 1
+    status: "True"
+    type: PodReadyToStartContainers
+  - lastProbeTime: null
+    lastTransitionTime: "2026-05-20T10:31:57Z"
+    observedGeneration: 1
+    status: "True"
+    type: Initialized
+  - lastProbeTime: null
+    lastTransitionTime: "2026-05-24T15:51:08Z"
+    observedGeneration: 1
+    status: "True"
+    type: Ready
+  - lastProbeTime: null
+    lastTransitionTime: "2026-05-24T15:51:08Z"
+    observedGeneration: 1
+    status: "True"
+    type: ContainersReady
+  - lastProbeTime: null
+    lastTransitionTime: "2026-05-20T10:31:55Z"
+    observedGeneration: 1
+    status: "True"
+    type: PodScheduled
+  containerStatuses:
+  - containerID: docker://ad16984cccf20ef76a922439a6a70460404f5183a05e7638e16b74ad726af97d
+    image: ghcr.io/cloudnative-pg/postgresql:18.3-system-trixie
+    imageID: docker-pullable://ghcr.io/cloudnative-pg/postgresql@sha256:0f29b435fb501ee534cd0c555d122a6b8e90de477de8e8381c82c5e10d9a9de4
+    lastState:
+      terminated:
+        containerID: docker://b8c06ca969389a61bf94f2fb3ba69fbf7a5a4654e041956f134f2ca7848a5aa8
+        exitCode: 0
+        finishedAt: "2026-05-21T17:07:25Z"
+        reason: Completed
+        startedAt: "2026-05-20T10:31:57Z"
+    name: postgres
+    ready: true
+    resources: {}
+    restartCount: 1
+    started: true
+    state:
+      running:
+        startedAt: "2026-05-24T15:50:56Z"
+    volumeMounts:
+    - mountPath: /var/lib/postgresql/data
+      name: pgdata
+    - mountPath: /run
+      name: scratch-data
+    - mountPath: /controller
+      name: scratch-data
+    - mountPath: /dev/shm
+      name: shm
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-k5n7n
+      readOnly: true
+      recursiveReadOnly: Disabled
+  hostIP: 192.168.49.2
+  hostIPs:
+  - ip: 192.168.49.2
+  initContainerStatuses:
+  - containerID: docker://6092955374f7997f1c7dc8967b0cb5948bbc2cd2afd559a98c92bd1b57050f4a
+    image: ghcr.io/cloudnative-pg/cloudnative-pg:1.29.1
+    imageID: docker-pullable://ghcr.io/cloudnative-pg/cloudnative-pg@sha256:0dfff19ba7b52ca25851a1010028b6940fff2e233290465af1cfb08a5f3f4661
+    lastState: {}
+    name: bootstrap-controller
+    ready: true
+    resources: {}
+    restartCount: 1
+    started: false
+    state:
+      terminated:
+        containerID: docker://6092955374f7997f1c7dc8967b0cb5948bbc2cd2afd559a98c92bd1b57050f4a
+        exitCode: 0
+        finishedAt: "2026-05-24T15:50:56Z"
+        reason: Completed
+        startedAt: "2026-05-24T15:50:55Z"
+    volumeMounts:
+    - mountPath: /var/lib/postgresql/data
+      name: pgdata
+    - mountPath: /run
+      name: scratch-data
+    - mountPath: /controller
+      name: scratch-data
+    - mountPath: /dev/shm
+      name: shm
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-k5n7n
+      readOnly: true
+      recursiveReadOnly: Disabled
+  observedGeneration: 1
+  phase: Running
+  podIP: 10.244.0.52
+  podIPs:
+  - ip: 10.244.0.52
+  qosClass: BestEffort
+  startTime: "2026-05-20T10:31:55Z"
+
+
+
+
+
+
+
+
+
+  dave@dave-ThinkPad-T14-Gen-1:~/Documents/Security$ kubectl get pod fnd-db-3 -o yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    cnpg.io/nodeSerial: "3"
+    cnpg.io/operatorVersion: 1.29.1
+    cnpg.io/podEnvHash: 6f5b64d9c5
+    cnpg.io/podSpec: '{"volumes":[{"name":"pgdata","persistentVolumeClaim":{"claimName":"fnd-db-3"}},{"name":"scratch-data","emptyDir":{}},{"name":"shm","emptyDir":{"medium":"Memory"}}],"initContainers":[{"name":"bootstrap-controller","image":"ghcr.io/cloudnative-pg/cloudnative-pg:1.29.1","command":["/manager","bootstrap","/controller/manager","--log-level=info"],"resources":{},"volumeMounts":[{"name":"pgdata","mountPath":"/var/lib/postgresql/data"},{"name":"scratch-data","mountPath":"/run"},{"name":"scratch-data","mountPath":"/controller"},{"name":"shm","mountPath":"/dev/shm"}],"securityContext":{"capabilities":{"drop":["ALL"]},"privileged":false,"runAsNonRoot":true,"readOnlyRootFilesystem":true,"allowPrivilegeEscalation":false,"seccompProfile":{"type":"RuntimeDefault"}}}],"containers":[{"name":"postgres","image":"ghcr.io/cloudnative-pg/postgresql:18.3-system-trixie","command":["/controller/manager","instance","run","--status-port-tls","--log-level=info"],"ports":[{"name":"postgresql","containerPort":5432,"protocol":"TCP"},{"name":"metrics","containerPort":9187,"protocol":"TCP"},{"name":"status","containerPort":8000,"protocol":"TCP"}],"env":[{"name":"PGDATA","value":"/var/lib/postgresql/data/pgdata"},{"name":"POD_NAME","value":"fnd-db-3"},{"name":"NAMESPACE","value":"default"},{"name":"CLUSTER_NAME","value":"fnd-db"},{"name":"PSQL_HISTORY","value":"/controller/tmp/.psql_history"},{"name":"PGPORT","value":"5432"},{"name":"PGHOST","value":"/controller/run"},{"name":"TMPDIR","value":"/controller/tmp"}],"resources":{},"volumeMounts":[{"name":"pgdata","mountPath":"/var/lib/postgresql/data"},{"name":"scratch-data","mountPath":"/run"},{"name":"scratch-data","mountPath":"/controller"},{"name":"shm","mountPath":"/dev/shm"}],"livenessProbe":{"httpGet":{"path":"/healthz","port":8000,"scheme":"HTTPS"},"timeoutSeconds":5,"periodSeconds":10},"readinessProbe":{"httpGet":{"path":"/readyz","port":8000,"scheme":"HTTPS"},"timeoutSeconds":5,"periodSeconds":10},"startupProbe":{"httpGet":{"path":"/startupz","port":8000,"scheme":"HTTPS"},"timeoutSeconds":5,"periodSeconds":10,"failureThreshold":360},"securityContext":{"capabilities":{"drop":["ALL"]},"privileged":false,"runAsNonRoot":true,"readOnlyRootFilesystem":true,"allowPrivilegeEscalation":false,"seccompProfile":{"type":"RuntimeDefault"}}}],"terminationGracePeriodSeconds":1800,"serviceAccountName":"fnd-db","securityContext":{"runAsUser":26,"runAsGroup":26,"runAsNonRoot":true,"fsGroup":26,"seccompProfile":{"type":"RuntimeDefault"}},"hostname":"fnd-db-3","affinity":{"podAntiAffinity":{"preferredDuringSchedulingIgnoredDuringExecution":[{"weight":100,"podAffinityTerm":{"labelSelector":{"matchExpressions":[{"key":"cnpg.io/cluster","operator":"In","values":["fnd-db"]},{"key":"cnpg.io/podRole","operator":"In","values":["instance"]}]},"topologyKey":"kubernetes.io/hostname"}}]}}}'
+  creationTimestamp: "2026-05-20T10:32:12Z"
+  generation: 1
+  labels:
+    app.kubernetes.io/component: database
+    app.kubernetes.io/instance: fnd-db
+    app.kubernetes.io/managed-by: cloudnative-pg
+    app.kubernetes.io/name: postgresql
+    app.kubernetes.io/version: "18"
+    cnpg.io/cluster: fnd-db
+    cnpg.io/instanceName: fnd-db-3
+    cnpg.io/instanceRole: replica
+    cnpg.io/podRole: instance
+    role: replica
+  name: fnd-db-3
+  namespace: default
+  ownerReferences:
+  - apiVersion: postgresql.cnpg.io/v1
+    blockOwnerDeletion: true
+    controller: true
+    kind: Cluster
+    name: fnd-db
+    uid: 71e4fe40-4e9f-47b9-92a8-406ec498b48a
+  resourceVersion: "297457"
+  uid: a1a916a1-363d-4f32-9dc8-856323fa5cff
+spec:
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+            - key: cnpg.io/cluster
+              operator: In
+              values:
+              - fnd-db
+            - key: cnpg.io/podRole
+              operator: In
+              values:
+              - instance
+          topologyKey: kubernetes.io/hostname
+        weight: 100
+  containers:
+  - command:
+    - /controller/manager
+    - instance
+    - run
+    - --status-port-tls
+    - --log-level=info
+    env:
+    - name: PGDATA
+      value: /var/lib/postgresql/data/pgdata
+    - name: POD_NAME
+      value: fnd-db-3
+    - name: NAMESPACE
+      value: default
+    - name: CLUSTER_NAME
+      value: fnd-db
+    - name: PSQL_HISTORY
+      value: /controller/tmp/.psql_history
+    - name: PGPORT
+      value: "5432"
+    - name: PGHOST
+      value: /controller/run
+    - name: TMPDIR
+      value: /controller/tmp
+    image: ghcr.io/cloudnative-pg/postgresql:18.3-system-trixie
+    imagePullPolicy: IfNotPresent
+    livenessProbe:
+      failureThreshold: 3
+      httpGet:
+        path: /healthz
+        port: 8000
+        scheme: HTTPS
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 5
+    name: postgres
+    ports:
+    - containerPort: 5432
+      name: postgresql
+      protocol: TCP
+    - containerPort: 9187
+      name: metrics
+      protocol: TCP
+    - containerPort: 8000
+      name: status
+      protocol: TCP
+    readinessProbe:
+      failureThreshold: 3
+      httpGet:
+        path: /readyz
+        port: 8000
+        scheme: HTTPS
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 5
+    resources: {}
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+        - ALL
+      privileged: false
+      readOnlyRootFilesystem: true
+      runAsNonRoot: true
+      seccompProfile:
+        type: RuntimeDefault
+    startupProbe:
+      failureThreshold: 360
+      httpGet:
+        path: /startupz
+        port: 8000
+        scheme: HTTPS
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 5
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /var/lib/postgresql/data
+      name: pgdata
+    - mountPath: /run
+      name: scratch-data
+    - mountPath: /controller
+      name: scratch-data
+    - mountPath: /dev/shm
+      name: shm
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-4689d
+      readOnly: true
+  dnsPolicy: ClusterFirst
+  enableServiceLinks: true
+  hostname: fnd-db-3
+  initContainers:
+  - command:
+    - /manager
+    - bootstrap
+    - /controller/manager
+    - --log-level=info
+    image: ghcr.io/cloudnative-pg/cloudnative-pg:1.29.1
+    imagePullPolicy: IfNotPresent
+    name: bootstrap-controller
+    resources: {}
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+        - ALL
+      privileged: false
+      readOnlyRootFilesystem: true
+      runAsNonRoot: true
+      seccompProfile:
+        type: RuntimeDefault
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /var/lib/postgresql/data
+      name: pgdata
+    - mountPath: /run
+      name: scratch-data
+    - mountPath: /controller
+      name: scratch-data
+    - mountPath: /dev/shm
+      name: shm
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-4689d
+      readOnly: true
+  nodeName: minikube
+  preemptionPolicy: PreemptLowerPriority
+  priority: 0
+  restartPolicy: Always
+  schedulerName: default-scheduler
+  securityContext:
+    fsGroup: 26
+    runAsGroup: 26
+    runAsNonRoot: true
+    runAsUser: 26
+    seccompProfile:
+      type: RuntimeDefault
+  serviceAccount: fnd-db
+  serviceAccountName: fnd-db
+  terminationGracePeriodSeconds: 1800
+  tolerations:
+  - effect: NoExecute
+    key: node.kubernetes.io/not-ready
+    operator: Exists
+    tolerationSeconds: 300
+  - effect: NoExecute
+    key: node.kubernetes.io/unreachable
+    operator: Exists
+    tolerationSeconds: 300
+  volumes:
+  - name: pgdata
+    persistentVolumeClaim:
+      claimName: fnd-db-3
+  - emptyDir: {}
+    name: scratch-data
+  - emptyDir:
+      medium: Memory
+    name: shm
+  - name: kube-api-access-4689d
+    projected:
+      defaultMode: 420
+      sources:
+      - serviceAccountToken:
+          expirationSeconds: 3607
+          path: token
+      - configMap:
+          items:
+          - key: ca.crt
+            path: ca.crt
+          name: kube-root-ca.crt
+      - downwardAPI:
+          items:
+          - fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+            path: namespace
+status:
+  conditions:
+  - lastProbeTime: null
+    lastTransitionTime: "2026-05-24T15:50:56Z"
+    observedGeneration: 1
+    status: "True"
+    type: PodReadyToStartContainers
+  - lastProbeTime: null
+    lastTransitionTime: "2026-05-20T10:32:14Z"
+    observedGeneration: 1
+    status: "True"
+    type: Initialized
+  - lastProbeTime: null
+    lastTransitionTime: "2026-05-24T15:51:04Z"
+    observedGeneration: 1
+    status: "True"
+    type: Ready
+  - lastProbeTime: null
+    lastTransitionTime: "2026-05-24T15:51:04Z"
+    observedGeneration: 1
+    status: "True"
+    type: ContainersReady
+  - lastProbeTime: null
+    lastTransitionTime: "2026-05-20T10:32:12Z"
+    observedGeneration: 1
+    status: "True"
+    type: PodScheduled
+  containerStatuses:
+  - containerID: docker://555edb41665d83203f06de942da006ea7d0cc118835baf3528aa28945b3ecdbd
+    image: ghcr.io/cloudnative-pg/postgresql:18.3-system-trixie
+    imageID: docker-pullable://ghcr.io/cloudnative-pg/postgresql@sha256:0f29b435fb501ee534cd0c555d122a6b8e90de477de8e8381c82c5e10d9a9de4
+    lastState:
+      terminated:
+        containerID: docker://437d0dffc172c949fcd5075a547ae09bd006cd599394364e1f7d9ef9e43547f4
+        exitCode: 0
+        finishedAt: "2026-05-21T17:07:25Z"
+        reason: Completed
+        startedAt: "2026-05-20T10:32:14Z"
+    name: postgres
+    ready: true
+    resources: {}
+    restartCount: 1
+    started: true
+    state:
+      running:
+        startedAt: "2026-05-24T15:50:56Z"
+    volumeMounts:
+    - mountPath: /var/lib/postgresql/data
+      name: pgdata
+    - mountPath: /run
+      name: scratch-data
+    - mountPath: /controller
+      name: scratch-data
+    - mountPath: /dev/shm
+      name: shm
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-4689d
+      readOnly: true
+      recursiveReadOnly: Disabled
+  hostIP: 192.168.49.2
+  hostIPs:
+  - ip: 192.168.49.2
+  initContainerStatuses:
+  - containerID: docker://cfb36e11dc48cba49302164aba287b4db5a5aef89eefdca2919713e77217d2af
+    image: ghcr.io/cloudnative-pg/cloudnative-pg:1.29.1
+    imageID: docker-pullable://ghcr.io/cloudnative-pg/cloudnative-pg@sha256:0dfff19ba7b52ca25851a1010028b6940fff2e233290465af1cfb08a5f3f4661
+    lastState: {}
+    name: bootstrap-controller
+    ready: true
+    resources: {}
+    restartCount: 1
+    started: false
+    state:
+      terminated:
+        containerID: docker://cfb36e11dc48cba49302164aba287b4db5a5aef89eefdca2919713e77217d2af
+        exitCode: 0
+        finishedAt: "2026-05-24T15:50:56Z"
+        reason: Completed
+        startedAt: "2026-05-24T15:50:55Z"
+    volumeMounts:
+    - mountPath: /var/lib/postgresql/data
+      name: pgdata
+    - mountPath: /run
+      name: scratch-data
+    - mountPath: /controller
+      name: scratch-data
+    - mountPath: /dev/shm
+      name: shm
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-4689d
+      readOnly: true
+      recursiveReadOnly: Disabled
+  observedGeneration: 1
+  phase: Running
+  podIP: 10.244.0.53
+  podIPs:
+  - ip: 10.244.0.53
+  qosClass: BestEffort
+  startTime: "2026-05-20T10:32:12Z"

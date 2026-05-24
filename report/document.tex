@@ -7,6 +7,9 @@
 \usepackage{longtable}
 \usepackage{booktabs}
 
+\setlength{\parskip}{0.8em}
+\setlength{\parindent}{0pt}
+
 \title{CPS2010 Security by Design Assignment}
 \author{Dave Galea}
 \date{May 2026}
@@ -16,27 +19,342 @@
 	\tableofcontents
 	\newpage
 	
+	\subsection{Note about artefact reference throughout the report:}
+	Unless stated otherwise, each referenced path for an artefact is relative to the folder of the relevant subtask. For example, when \texttt{yamls/cnpg\_cluster.yaml} is referenced in Task 1a, it refers to \texttt{task1a/yamls/cnpg\_cluster.yaml} in the submitted Google Drive folder.
+	
 	\section{Task 1: Reliable and Robust Application Platforms}
 	
-	\subsection{Task 1(a): CloudNativePG Read-Write/Read-Only PostgreSQL Cluster}
+	\subsection{Task 1(a)}
 	
-	\subsection{Task 1(b): Read-Write and Read-Only API Services}
+	\textbf{CloudNative Operator deployment}
 	
-	\subsection{Task 1(c): Security and Reliability Explanation}
+	The original single PostgreSQL setup was replaced with a CloudNativePG-managed PostgreSQL cluster. The CloudNativePG Helm repository was added, and the CNPG operator was installed in the \texttt{cnpg-system} namespace using Helm, using appropriate documentation \cite{cnpgdownload} as reference.
+
+	
+	\textbf{Cluster bootstrap}
+	
+	The PostgreSQL cluster was created using \texttt{task1a/yamls/cnpg\_cluster.yaml}. This manifest created the Kubernetes secret \texttt{app-secret} and bootstrapped the \texttt{fnd-db} cluster with the \texttt{ordersdb} database owned by \texttt{clusteruser}. Reference for how to perform this step was obtained from cloudnative-pg.io documentation \cite{cnpgbootstrap}.
+	
+	
+	\textbf{Read-write/read-only split}
+	
+	CloudNativePG exposed the required split through separate Kubernetes services. The \texttt{fnd-db-rw} service targets the current primary instance and is used for read-write traffic. The \texttt{fnd-db-ro} service targets replica instances and is used for read-only traffic.
+	
+	The cluster was configured with \texttt{instances:3}. For the read-write/read-only split, 2 instances would have been sufficient, since this would provide one primary instance and one replica. Although the additional replica was not strictly required for the task, it improved the final setup by increasing the capacity available for read-only traffic.
+	
+	\textbf{Resource verification}
+	
+	Correct Kubernetes resource creation and pod deployment was confirmed using \texttt{kubectl}. All commands used can be found in the \textbf{task1a readme.txt}
+	
+	\subsection{Task 1(b)}
+	
+	\textbf{Preparing the Repository}
+	
+	After splitting the codebase into respective versions, one for read-write, and one for read-only, both versions were prepared to perform their respective tasks. Naturally most configuration was applied to the read-only version of the app, as it is the version which required inhibition of previously available features. 
+	
+	Changes made to the read only codebase include:
+	\begin{itemize}
+		\item Applying of a RepositoryRestConfigurer to block non-GET requests (file at \texttt{app-ro/src/}\\\texttt{main/java/com/example/foodndeliv/config/SpringDataRestCustomization.java}). \\ Reference code was used from 2nd set of notes: Reliable Application Platforms.pdf, from pages 124-125.
+		
+		\item Modifying controllers and services in the source code to block any mappings (such as put and post) exposed which may allow non-GET requests, as well as comment out any keycloak-dependent code.
+		
+		\item Disabling of keycloak config files, as they were not needed for this task
+		
+	\end{itemize}
+	
+	Changes made to both repositories:
+	\begin{itemize}
+		\item Modifying the docker files accordingly
+		
+		\item Adding an exception handler for HTTP methods, which shows specific errors for when a method is not supported (eg, POST on a read-only service).
+		
+		\item Modifying application.properites. Most importantly \texttt{spring.jpa.hibernate.ddl-auto=\_\_}. This was set as \texttt{=update} for the first building of the RW app, and then as \texttt{=none} for the second rebuilding, for reasons explained in the \textbf{Schema Setup} section below.
+	\end{itemize}
+	
+	\textbf{Connecting the services to the databases}
+	
+	The \texttt{fnd-rw} deployment sets \texttt{DB\_HOST=fnd-db-rw}, while the \texttt{fnd-ro} deployment sets \texttt{DB\_HOST=} \texttt{fnd-db-ro}.
+	
+	The deployments and services were created using \texttt{yamls/rw-deployment.yaml}, \texttt{yamls/ro-deplo-} \texttt{yment.yaml}, \texttt{yamls/rw-service.yaml}, and \texttt{yamls/ro-service.yaml}. The resulting services were \texttt{fnd-rw} and \texttt{fnd-ro}.. Both deployments use the credentials defined in \texttt{yamls/db-secret.yaml}. The yaml file configuration was inspired from the kubernetes documentation\cite{Connecting applications with services kubernetes} \cite{Define Environment Variables for a Container} \cite{Distribute Credentials Securely Using Secrets}
+
+	
+	\textbf{Deployment}
+	
+	Both applications were built as separate Maven projects and Docker images. The read-write image was pushed as \texttt{davegalea/foodndeliv-rw:task1b}, and the read-only image was pushed as \texttt{davegalea/foodndeliv-ro:task1b}.
+	
+	\textbf{Schema setup}
+	
+	For the first read-write deployment, \texttt{spring.jpa.hibernate.ddl-auto=update} was used so that  the database schema could be create. After this, the read-write application was rebuilt with \texttt{spring.jpa.hibernate.ddl-auto=none}. The read-only version also used \texttt{ddl-auto=none}, since it should not create or modify the schema.
+	
+	\textbf{Testing and verification}
+	
+	The services were exposed locally using port forwarding:
+	
+	\begin{verbatim}
+		kubectl port-forward svc/fnd-ro 8080:8080 (for read only)
+		kubectl port-forward svc/fnd-rw 8081:8080 (for read-write)
+	\end{verbatim}
+	
+	The read-only API accepted GET requests and rejected non-GET requests, while the read-write API retained the original behaviour, rejecting only DELETE requests as specified to do so in the untouched source code. Various tests were performed, all listed in \textbf{postman/tests.txt}. 
+	
+	The deployment was verified using \texttt{kubectl get pods}, \texttt{kubectl describe deployment fnd-rw}, \texttt{kubectl describe deployment fnd-ro}, and the pod logs for both deployments.
+	
+	\subsection{Task 1(c)}
+	
+	\textbf{i) Least Privilege}
+	
+	Least Privilege is the principle where only the minimum amount of permissions necessary to perform a task are allocated to a program and/or its user.\cite{Least Privilege and More Fred B. Schneider}
+	
+	This setup applies Least Privilege by separating the FoodNDeliv API into two deployments: \texttt{fnd-rw} and \texttt{fnd-ro}. The \texttt{fnd-rw} deployment is used for operations that require database writes and is connected to the CNPG read-write service, while the \texttt{fnd-ro} deployment is used only for read operations and is connected to the CNPG read-only service. The cited definition is primarily exemplified through the read-only API  version. In addition to using the CNPG read-only service, it is restricted to only accept GET requests, meaning that the service has no other permissions besides those needed for its role.
+	
+	\textbf{ii) Handling traffic spikes}
+	
+	This setup handles traffic spikes mainly by separating read-only and read-write traffic. This means that a surge in read-heavy traffic can be directed to the read-only API instead of placing all traffic on the read-write API.
+	
+	The CNPG cluster was deployed with \texttt{instances:3}, providing one primary PostgreSQL instance and two replica instances. This further supports read-heavy workloads because read-only database traffic can be served through the CNPG read-only service, which routes to replica instances, rather than forcing all database traffic through the read-write primary instance.
+	
+	\textbf{iii) Availability during failures}
+	
+	Availability is improved because the CNPG database is deployed with multiple PostgreSQL instances rather than relying on a single database pod. The current system has one primary instance and two replica instances, so the system is not dependent on only one PostgreSQL pod remaining healthy.
+	
+	If the primary instance fails, CNPG can promote one of the existing replicas to become the new primary, allowing read-write database access to continue after failover. 
+	
+	\textbf{iv) Data Loss Prevention}
+	
+	Data loss prevention is achieved through both replication and restriction of DELETE operations. 
+	
+	Regarding replication, the CNPG cluster is deployed with one primary instance and two replica instances, so database state is not dependent on a single PostgreSQL pod. Data written to the primary is thus replicated, so if the primary pod fails, one of the replicas can be promoted and service can continue with a copy of the database state.
+	
+	Regarding restriction, the setup also restricts DELETE operations in both API versions. The read-only API, only accepts GET requests and therefore by nature cannot cause data loss via deletion. connects to the CNPG read-only service, \texttt{fnd-db-ro}. Therefore, it cannot be used to create, update, or delete records. The read-write API can modify data, but delete operations are also disabled due to \texttt{@RestResource(exported=false)} above the \texttt{deleteById} methods for all three Customer, Order, and Restaurant Repository files. 
+	
 	
 	\section{Task 2: Security Operations}
 	
-	\subsection{Task 2(a): Baseline Profile Controls}
+	\subsection{Task 2(a)}
 	
-	\subsection{Task 2(b): Restricted Profile Controls}
+	The Baseline profile controls are those which adhere to the kubernetes baseline policy, which serves as a middle ground between an unrestricted and open privileged policy, and a restricted policy, which aims to enforce best practices for security-critical applications.\cite{kubernetes documentation link from slides}
 	
-	\subsection{Task 2(c): Compatibility of API and CNPG Workloads}
+	The table below addresses the Linux-applicable Baseline controls, the isolation each control provides, and how each one limits what an attacker can do after a pod has been compromised (post-exploitation)
+	
+	\begin{longtable}{|p{2.5cm}|p{5.4cm}|p{6.2cm}|}
+		\caption{Linux-targeting Baseline Profile controls and their post-exploitation impact.}
+		\label{tab:baseline-profile-controls} \\
+		
+		\hline
+		\textbf{Baseline control} & \textbf{Isolation provided} & \textbf{How it limits post-exploitation} \\
+		\hline
+		\endfirsthead
+		
+		\hline
+		\textbf{Baseline control} & \textbf{Isolation provided} & \textbf{How it limits post-exploitation} \\
+		\hline
+		\endhead
+		
+		\hline
+		\multicolumn{3}{r}{\textit{Continued on next page}} \\
+		\endfoot
+		
+		\hline
+		\endlastfoot
+		
+		\textbf{Host Namespaces} &
+		Disallows sharing the host network, host process identifier (PID), and host inter-process communication (IPC) namespace. &
+		If a pod is compromised, the attacker is restricted from using the hosts's network namespace ,viewing information about host processes, or interfering with host inter-process communication. \\
+		\hline
+		
+		\textbf{Privileged Containers} &
+		This control disallows containers from running with \texttt{securityContext.privileged: true}. Privileged containers are purposely-open and entirely unrestricted.  & 
+		This control is preventive at admission time, because it stops privileged pods from being deployed. It limits post-exploitation because if the pod is later compromised, the attacker does not inherit the lack of restriction of privileged containers.  \\
+		\hline
+		
+		\textbf{Capabilities} &
+		This control restricts extending the set of allowed capabilities from a defined list. Allowed cpabalities included \texttt{AUDIT\_WRITE}, \texttt{CHOWN}, and others listed in the kubernetes documentation.&
+		By disabling the ability to extend the list of capabilities, compromised pods cannot do anything besides those within the baseline policy. \\
+		\hline
+		
+		\textbf{HostPath Volumes} &
+		This control forbids \texttt{hostPath} volumes, which would otherwise allow a pod to mount files or directories from the host's filesystem. &
+		If a compromised pod cannot mount host paths, the attacker cannot use the pod as a direct route to read or modify sensitive host files.\\
+		\hline
+		
+		\textbf{Host Ports} &
+		This control disallows or restricts the use of \texttt{hostPort}, preventing containers from binding directly to the host's ports. &
+		An attacker with access to a compromised pod cannot easily expose a malicious service directly on the host's network. \\
+		\hline
+		
+		\textbf{Host Probes / Lifecycle Hooks} &
+		This control disallows setting the \texttt{host} field in HTTP or TCP probes and lifecycle hooks. &
+		If a pod is compromised, the attacker cannot rely on probe or lifecycle hook configuration to direct container checks or lifecycle actions toward arbitrary hosts not previously configured.\\
+		\hline
+		
+		\textbf{AppArmor} &
+		This control prevents disabling or overriding the AppArmor profile, a linux kernel security module which protects applications through strict security profiles \cite{ AppArmor Technical Documentation}. &
+		Even if a pod is compromised, the AppArmor profile can still restrict what the container process is allowed to access or execute. \\
+		\hline
+		
+		\textbf{SELinux} &
+		This control restricts modification of Security-Enhanced (SE)Linux options.  &
+		A compromised pod cannot relieve itself of the strict policy that SELinux enforces, which is a mandatory access control system \cite{Meeting criticical security obejctives with security-enahnce linux}.  \\
+		\hline
+		
+		\textbf{\texttt{/proc} Mount Type} &
+		\texttt{/proc} is a virtual files system that provides information about active processes \cite{selfservice linux}. This control requires the default \texttt{/proc} mount behaviour , and prevents it from being unmasked. &
+		If a pod is compromised, the attacker has less visibility into host and kernel information because sensitive \texttt{/proc} paths remain masked. \\
+		\hline
+		
+		\textbf{Seccomp} &
+		This control prevents explicitly setting the Secure Computing Mode (seccomp) profile to \texttt{Unconfined}. Seccomp isolates processes by filtering and thus restricting which system calls they can invoke \cite{automating seccomp filter generation for linux applications}. &
+		Keeping seccomp enabled reduces dangerous or unnecessary syscalls that can be called after pod compromisation, making post-exploitation harder. \\
+		\hline
+		
+		\textbf{Sysctls} &
+		This control disallows unsafe sysctls which can otherwise change kernel parameters affecting all containers on a host. \cite{ADAPTIVE KERNEL PARAMETER ADJUSTMENT VIA SHELL SCRIPTING} &
+		If a pod is compromised, the attacker cannot use unsafe sysctls to affect node-level settings, or other pods on the same node. \\
+		\hline
+		
+	\end{longtable}
+	
+	\subsection{Task 2(b)}
+	
+	The Restricted Profile raises the level of isolation beyond the Baseline Profile by enforcing stricter container hardening rules on top of the Baseline policy. It has various additional controls: some new ones, and some which build upon the previous controls in baseline.
+	
+	
+	\textbf{Volume types:} \\
+	The volume type control builds upon the Baseline restriction on \texttt{hostPath} volumes. Baseline prevents pods from mounting arbitrary files or directories from the host filesystem through \texttt{hostPath}. Restricted goes further by limiting pods to a small set of approved Kubernetes-managed volume types, such as \texttt{configMap}, and others listed on the Kubernetes documentation\cite{kubernetes documentation}. This improves isolation by ensuring that storage access remains within controlled Kubernetes volume types.\\
+	
+	\textbf{Privilege escalation:}\\
+	The privilege escalation control builds upon the Baseline restriction on privileged containers. Baseline is preventive at admission time because it stops containers from being launched with \texttt{securityContext.privileged: true}, which blocks the most unrestricted form of container execution before the pod is deployed. Restricted goes further by requiring \texttt{allowPrivilegeEscalation: false}, withholding from the pod's ability to gain that privilege later on in its lifetime. This improves isolation because if the pod is compromised, the attacker remains limited to the privileges of the compromised process rather than being able to escalate further inside the container.
+	
+	\textbf{Running as Non-root:}\\
+	\texttt{runAsNonRoot} is the Restricted-Policy specific requirement that the container must not run as root, while \texttt{runAsUser} is the specific Linux user ID selected for the container process. Restricted policy uses both controls so that a pod must declare non-root execution and must not explicitly set the user ID 0, which is the root user. This raises isolation because a compromised process has fewer permissions inside the container than it would have if it were running as root.
+	
+	\textbf{Seccomp:}\\
+	The seccomp control builds directly upon the Baseline seccomp rule. Seccomp limits the system calls that a container process can make to the Linux kernel. Baseline prevents a pod from explicitly setting seccomp to \texttt{Unconfined}, which blocks deliberately disabling system call filtering. However, Baseline may still allow the seccomp profile to be unset. Restricted is stricter because it requires the pod or container to explicitly use either \texttt{RuntimeDefault} or \texttt{Localhost}. Restricted requires an allowed seccomp profile to be declared. This improves isolation because if the container is compromised, the attacker has fewer system-calls available for post-exploitation.
+	
+	\textbf{Capabilities:}\\
+	The capabilities control also builds directly upon the Baseline capabilities rule. Baseline restricts which additional Linux capabilities may be added to a container. Restricted, on the other hand is stricter because it requires containers to drop all capabilities and only allows \texttt{NET\_BIND\_SERVICE} to be added back; thus only allowing the capabilitiy of  binding a server socket to a privileged port\cite{Implementing the Principle of Least Privilege Using Linux Capabilities: Challenges and Perspectives}
+	
+	
+	\subsection{Task 2(c)}
+	
+	To measure how well the current setup, which includes both the API service and CNPG, comply with the two Pod Security Standards policy profiles, kubectl was used. 
+	The following pods were inspected individually:
+	
+	\begin{itemize}
+		\item \texttt{fnd-ro-b67f56765-9wdfg} (API service)
+		\item \texttt{fnd-rw-84559864d4-g9q24} (API service)
+		\item \texttt{fnd-db-1} (CNPG)
+		\item \texttt{fnd-db-2} (CNPG)
+		\item \texttt{fnd-db-3} (CNPG)
+	\end{itemize}
+	
+	The pod specifications were exported using: \texttt{kubectl get pod <pod-name> -o yaml}
+	
+	The above can be seen in \texttt{task2c/kubectl-session.txt}
+	\subsubsection{API Services(fnd-ro \& fnd-rw)}
+	
+	\paragraph{Baseline profile.}
+	
+	\begin{itemize}
+		\item \textbf{Host namespaces:} \textbf{Compliant} as \texttt{spec.hostNetwork}, \texttt{spec.hostPID}, and \texttt{spec.hostIPC} are absent.
+		
+		\item \textbf{Privileged containers:} \textbf{Compliant} as \texttt{securityContext.privileged} is set to false.
+		
+		\item \textbf{Capabilities:} \textbf{Compliant} as \texttt{containers[*].securityContext.capabilities.add} is absent
+		
+		\item \textbf{HostPath volumes:} \textbf{Compliant} as \texttt{spec.volumes[*].hostPath} is absent.
+		
+		\item \textbf{Host ports:} \textbf{Compliant} \texttt{containers[*].ports[*].hostPort} is absent
+		
+		\item \textbf{Host probes / lifecycle hooks:} \textbf{Compliant} as their configuration is absent.
+		
+		\item \textbf{AppArmor:} \textbf{Compliant} as AppArmor configuration is absent.
+		
+		\item \textbf{SELinux:} \textbf{Compliant} as SELinux configuration is absent.
+		
+		\item \textbf{\texttt{/proc} mount type:} \textbf{Compliant} as \texttt{procMount} configuration is absent.
+		
+		\item \textbf{Seccomp:} \textbf{Compliant} as \texttt{seccompProfile} is absent and thus not set to \texttt{Unconfined}.
+			
+		\item \textbf{Sysctls:} \textbf{Compliant} as sysctls configuration is absent. 
+	\end{itemize}
+	
+	\paragraph{Restricted profile.}
+	
+	\begin{itemize}
+		\item \textbf{Everything from Baseline:} \textbf{Compliant.}
+		
+		\item \textbf{Volume types:} \textbf{Compliant} as volume type \texttt{projected:} is used. 
+		
+		\item \textbf{Privilege escalation:} \textbf{Compliant} as Privilege escalation configuration is set to \texttt{false} 
+		
+		\item \textbf{Running as non-root:} \textbf{Not Compliant} as \texttt{runAsNonRoot} configuration is absent and Restricted profile requires it to be set as \texttt{true}
+		
+		\item \textbf{Running as non-root user:} \textbf{Compliant} as \texttt{runAsUser} is absent, and for the Restricted profile, it must not be 0.
+		
+		\item \textbf{Seccomp:} \textbf{Not Compliant} as Restricted profile requires \texttt{seccompProfile.type} to be explicitly set to \texttt{RuntimeDefault} and it is absent. 
+		
+		\item \textbf{Capabilities:} \textbf{Not Compliant} as Restricted profile requires \texttt{capabilities.drop} to include \texttt{ALL}, and \texttt{capabilities.drop} is absent. 
+	\end{itemize}
+	
+	\paragraph{Result.}
+	The API services are Baseline Profile compliant, however violate a few requirements necessary to be Restricted Profile Compliant.
+	
+	\subsubsection{CNPG (fnd-db-1/2/3)}
+	
+	\paragraph{Baseline profile.}
+	
+	\begin{itemize}
+		\item \textbf{Host namespaces:} \textbf{Compliant} as \texttt{spec.hostNetwork}, \texttt{spec.hostPID}, and \texttt{spec.hostIPC} are absent.
+		
+		\item \textbf{Privileged containers:} \textbf{Compliant} as \texttt{securityContext.privileged} is set to false.
+		
+		\item \textbf{Capabilities:} \textbf{Compliant} as \texttt{securityContext.capabilities.add} is absent
+		
+		\item \textbf{HostPath volumes:} \textbf{Compliant} as \texttt{spec.volumes[*].hostPath} is absent.
+		
+		\item \textbf{Host ports:} \textbf{Compliant} \texttt{containers[*].ports[*].hostPort} is absent
+		
+		\item \textbf{Host probes / lifecycle hooks:} \textbf{Compliant} as probe configuration do not set a custom host, and lifecycle hooks are absent.
+		
+		\item \textbf{AppArmor:} \textbf{Compliant} as AppArmor configuration is absent.
+		
+		\item \textbf{SELinux:} \textbf{Compliant} as SELinux configuration is absent.
+		
+		\item \textbf{\texttt{/proc} mount type:} \textbf{Compliant} as \texttt{procMount} configuration is absent.
+		
+		\item \textbf{Seccomp:} \textbf{Compliant} as \texttt{seccompProfile} is set to \texttt{RunTimeDefault} and is thus not \texttt{unconfined}
+			
+		\item \textbf{Sysctls:} \textbf{Compliant} as sysctls configuration is absent. 
+	\end{itemize}
+	
+	\paragraph{Restricted profile.}
+	
+	\begin{itemize}
+		\item \textbf{Everything from Baseline:} \textbf{Compliant.}
+
+		\item \textbf{Volume types:} \textbf{Compliant} as volume type \texttt{projected:} is used. 
+		
+		\item \textbf{Privilege escalation:} \textbf{Compliant} as Privilege escalation configuration is set to \texttt{false}. 
+		
+		\item \textbf{Running as non-root:} \textbf{Compliant} as \texttt{runAsNonRoot} configuration is set as \texttt{true}.
+		
+		\item \textbf{Running as non-root user:} \textbf{Compliant} as \texttt{runAsUser} is set to 26, and for the Restricted profile, it must not be 0.
+		
+		\item \textbf{Seccomp:} \textbf{Compliant} as Restricted profile requires \texttt{seccompProfile.type} to be explicitly set to \texttt{RuntimeDefault}, and it is set as so. 
+		
+		\item \textbf{Capabilities:} \textbf{Compliant} as Restricted profile requires \texttt{capabilities.drop} to include \texttt{ALL}, and it is set as so.
+	\end{itemize}
+	
+	\paragraph{Result.}
+	The CNPG Pods comply with both Baseline and Restricted Profiles. 
+		
 	
 	\section{Task 3: Access Control and Resilience}
 	
-	\subsection{Task 3(a): KrakenD and Keycloak Deployment}
+	\subsection{Task 3(a)}
 	
-	\subsection{Task 3(b): Updating the API service}
+	\subsection{Task 3(b)}
 	
 	\section{Generative AI Usage}
 	
