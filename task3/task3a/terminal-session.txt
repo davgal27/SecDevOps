@@ -470,3 +470,177 @@ fnd-task3-8566f7f468-7j4l5            1/1     Running   1 (3d3h ago)   6d
 krakend-deployment-6f554cf975-84vhg   1/1     Running   1 (3d3h ago)   6d9h
 krakend-deployment-6f554cf975-dbs7t   1/1     Running   1 (3d3h ago)   6d9h
 krakend-deployment-6f554cf975-gxvrq   1/1     Running   1 (3d3h ago)   6d9h 
+
+dave@dave-ThinkPad-T14-Gen-1:~/Documents/Security/task3/task3a/krakend$ kubectl logs deployment/fnd-task3
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.3.3)
+
+2026-05-31T11:10:15.999Z  INFO 6 --- [foodndeliv] [           main] c.e.foodndeliv.FoodndelivApplication     : Starting FoodndelivApplication v0.0.1-SNAPSHOT using Java 17.0.19 with PID 6 (/app/foodndeliv.jar started by root in /app)
+2026-05-31T11:10:16.034Z  INFO 6 --- [foodndeliv] [           main] c.e.foodndeliv.FoodndelivApplication     : No active profile set, falling back to 1 default profile: "default"
+2026-05-31T11:10:25.349Z  INFO 6 --- [foodndeliv] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-05-31T11:10:25.567Z  INFO 6 --- [foodndeliv] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 188 ms. Found 3 JPA repository interfaces.
+2026-05-31T11:10:31.770Z  INFO 6 --- [foodndeliv] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2026-05-31T11:10:31.856Z  INFO 6 --- [foodndeliv] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-05-31T11:10:31.857Z  INFO 6 --- [foodndeliv] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.28]
+2026-05-31T11:10:32.349Z  INFO 6 --- [foodndeliv] [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-05-31T11:10:32.353Z  INFO 6 --- [foodndeliv] [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 15849 ms
+2026-05-31T11:10:34.014Z  INFO 6 --- [foodndeliv] [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-05-31T11:10:34.219Z  INFO 6 --- [foodndeliv] [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.2.Final
+2026-05-31T11:10:34.323Z  INFO 6 --- [foodndeliv] [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-05-31T11:10:35.112Z  INFO 6 --- [foodndeliv] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-05-31T11:10:35.181Z  INFO 6 --- [foodndeliv] [           main] com.zaxxer.hikari.HikariDataSource       : MyHikariPool    - Starting...
+2026-05-31T11:10:36.312Z  WARN 6 --- [foodndeliv] [           main] o.h.e.j.e.i.JdbcEnvironmentInitiator     : HHH000342: Could not obtain connection to query metadata
+
+java.lang.NullPointerException: Cannot invoke "org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(java.sql.SQLException, String)" because the return value of "org.hibernate.resource.transaction.backend.jdbc.internal.JdbcIsolationDelegate.sqlExceptionHelper()" is null
+        at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcIsolationDelegate.delegateWork(JdbcIsolationDelegate.java:116) ~[hibernate-core-6.5.2.Final.jar!/:6.5.2.Final]
+        at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.getJdbcEnvironmentUsingJdbcMetadata(JdbcEnvironmentInitiator.java:290) ~[hibernate-core-6.5.2.Final.jar!/:6.5.2.Final]
+        at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:123) ~[hibernate-core-6.5.2.Final.jar!/:6.5.2.Final]
+        at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:77) ~[hibernate-core-6.5.2.Final.jar!/:6.5.2.Final]
+        at org.hibernate.boot.registry.internal.StandardServiceRegistryImpl.initiateService(StandardServiceRegistryImpl.java:130) ~[hibernate-core-6.5.2.Final.jar!/:6.5.2.Final]
+        at org.hibernate.service.internal.AbstractServiceRegistryImpl.createService(AbstractServiceRegistryImpl.java:263) ~[hibernate-core-6.5.2.Final.jar!/:6.5.2.Final]
+        at org.hibernate.service.internal.AbstractServiceRegistryImpl.initializeService(AbstractServiceRegistryImpl.java:238) ~[hibernate-core-6.5.2.Final.jar!/:6.5.2.Final]
+        at org.hibernate.service.internal.AbstractServiceRegistryImpl.getService(AbstractServiceRegistryImpl.java:215) ~[hibernate-core-6.5.2.Final.jar!/:6.5.2.Final]
+        at org.hibernate.boot.model.relational.Database.<init>(Database.java:45) ~[hibernate-core-6.5.2.Final.jar!/:6.5.2.Final]
+        at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.getDatabase(InFlightMetadataCollectorImpl.java:221) ~[hibernate-core-6.5.2.Final.jar!/:6.5.2.Final]
+        at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.<init>(InFlightMetadataCollectorImpl.java:189) ~[hibernate-core-6.5.2.Final.jar!/:6.5.2.Final]
+        at org.hibernate.boot.model.process.spi.MetadataBuildingProcess.complete(MetadataBuildingProcess.java:171) ~[hibernate-core-6.5.2.Final.jar!/:6.5.2.Final]
+        at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.metadata(EntityManagerFactoryBuilderImpl.java:1431) ~[hibernate-core-6.5.2.Final.jar!/:6.5.2.Final]
+        at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1502) ~[hibernate-core-6.5.2.Final.jar!/:6.5.2.Final]
+        at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:75) ~[spring-orm-6.1.12.jar!/:6.1.12]
+        at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:390) ~[spring-orm-6.1.12.jar!/:6.1.12]
+        at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:409) ~[spring-orm-6.1.12.jar!/:6.1.12]
+        at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:396) ~[spring-orm-6.1.12.jar!/:6.1.12]
+        at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:366) ~[spring-orm-6.1.12.jar!/:6.1.12]
+        at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1853) ~[spring-beans-6.1.12.jar!/:6.1.12]
+        at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1802) ~[spring-beans-6.1.12.jar!/:6.1.12]
+        at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:600) ~[spring-beans-6.1.12.jar!/:6.1.12]
+        at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522) ~[spring-beans-6.1.12.jar!/:6.1.12]
+        at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:337) ~[spring-beans-6.1.12.jar!/:6.1.12]
+        at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[spring-beans-6.1.12.jar!/:6.1.12]
+        at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:335) ~[spring-beans-6.1.12.jar!/:6.1.12]
+        at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:205) ~[spring-beans-6.1.12.jar!/:6.1.12]
+        at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:954) ~[spring-context-6.1.12.jar!/:6.1.12]
+        at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:625) ~[spring-context-6.1.12.jar!/:6.1.12]
+        at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146) ~[spring-boot-3.3.3.jar!/:3.3.3]
+        at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:754) ~[spring-boot-3.3.3.jar!/:3.3.3]
+        at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:456) ~[spring-boot-3.3.3.jar!/:3.3.3]
+        at org.springframework.boot.SpringApplication.run(SpringApplication.java:335) ~[spring-boot-3.3.3.jar!/:3.3.3]
+        at org.springframework.boot.SpringApplication.run(SpringApplication.java:1363) ~[spring-boot-3.3.3.jar!/:3.3.3]
+        at org.springframework.boot.SpringApplication.run(SpringApplication.java:1352) ~[spring-boot-3.3.3.jar!/:3.3.3]
+        at com.example.foodndeliv.FoodndelivApplication.main(FoodndelivApplication.java:12) ~[!/:0.0.1-SNAPSHOT]
+        at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+        at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(Unknown Source) ~[na:na]
+        at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source) ~[na:na]
+        at java.base/java.lang.reflect.Method.invoke(Unknown Source) ~[na:na]
+        at org.springframework.boot.loader.launch.Launcher.launch(Launcher.java:102) ~[foodndeliv.jar:0.0.1-SNAPSHOT]
+        at org.springframework.boot.loader.launch.Launcher.launch(Launcher.java:64) ~[foodndeliv.jar:0.0.1-SNAPSHOT]
+        at org.springframework.boot.loader.launch.JarLauncher.main(JarLauncher.java:40) ~[foodndeliv.jar:0.0.1-SNAPSHOT]
+
+2026-05-31T11:10:36.385Z  WARN 6 --- [foodndeliv] [           main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-05-31T11:10:38.730Z  INFO 6 --- [foodndeliv] [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-05-31T11:10:38.735Z  INFO 6 --- [foodndeliv] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-05-31T11:10:39.359Z  INFO 6 --- [foodndeliv] [           main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-05-31T11:10:41.439Z  WARN 6 --- [foodndeliv] [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-05-31T11:10:43.586Z  INFO 6 --- [foodndeliv] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 15 endpoints beneath base path '/actuator'
+2026-05-31T11:10:43.761Z  INFO 6 --- [foodndeliv] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2026-05-31T11:10:43.792Z  INFO 6 --- [foodndeliv] [           main] c.e.foodndeliv.FoodndelivApplication     : Started FoodndelivApplication in 29.988 seconds (process running for 32.708)
+2026-05-31T12:22:32.524Z  INFO 6 --- [foodndeliv] [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-05-31T12:22:32.524Z  INFO 6 --- [foodndeliv] [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-05-31T12:22:32.527Z  INFO 6 --- [foodndeliv] [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 3 ms
+2026-05-31T12:22:32.658Z  INFO 6 --- [foodndeliv] [nio-8080-exec-1] com.zaxxer.hikari.HikariDataSource       : MyHikariPool    - Starting...
+2026-05-31T12:22:33.092Z  INFO 6 --- [foodndeliv] [nio-8080-exec-1] com.zaxxer.hikari.pool.HikariPool        : MyHikariPool    - Added connection org.postgresql.jdbc.PgConnection@4ad57c3b
+2026-05-31T12:22:33.107Z  INFO 6 --- [foodndeliv] [nio-8080-exec-1] com.zaxxer.hikari.HikariDataSource       : MyHikariPool    - Start completed.
+Hibernate: select r1_0.id,r1_0.address,r1_0.created_by,r1_0.created_date,r1_0.modified_by,r1_0.modified_date,r1_0.name,r1_0.state from restaurants r1_0 offset ? rows fetch first ? rows only
+Hibernate: select r1_0.id,r1_0.address,r1_0.created_by,r1_0.created_date,r1_0.modified_by,r1_0.modified_date,r1_0.name,r1_0.state from restaurants r1_0 offset ? rows fetch first ? rows only
+Hibernate: select o1_0.id,o1_0.created_by,o1_0.created_date,o1_0.customer_id,o1_0.modified_by,o1_0.modified_date,o1_0.order_details,o1_0.restaurant_id,o1_0.state from orders o1_0 join restaurants r1_0 on r1_0.id=o1_0.restaurant_id where r1_0.name=?
+Hibernate: select o1_0.id,o1_0.created_by,o1_0.created_date,o1_0.customer_id,o1_0.modified_by,o1_0.modified_date,o1_0.order_details,o1_0.restaurant_id,o1_0.state from orders o1_0 join restaurants r1_0 on r1_0.id=o1_0.restaurant_id where r1_0.name=?
+Hibernate: select o1_0.id,o1_0.created_by,o1_0.created_date,o1_0.customer_id,o1_0.modified_by,o1_0.modified_date,o1_0.order_details,o1_0.restaurant_id,o1_0.state from orders o1_0 join restaurants r1_0 on r1_0.id=o1_0.restaurant_id where r1_0.name=?
+Hibernate: select c1_0.id,c1_0.created_by,c1_0.created_date,c1_0.email,c1_0.modified_by,c1_0.modified_date,c1_0.name,c1_0.state from customers c1_0 where c1_0.id=?
+Hibernate: select c1_0.id,c1_0.created_by,c1_0.created_date,c1_0.email,c1_0.modified_by,c1_0.modified_date,c1_0.name,c1_0.state from customers c1_0 where c1_0.id=?
+Hibernate: select c1_0.id,c1_0.created_by,c1_0.created_date,c1_0.email,c1_0.modified_by,c1_0.modified_date,c1_0.name,c1_0.state from customers c1_0 where c1_0.id=?
+Hibernate: select c1_0.id,c1_0.created_by,c1_0.created_date,c1_0.email,c1_0.modified_by,c1_0.modified_date,c1_0.name,c1_0.state from customers c1_0 where c1_0.id=?
+Hibernate: select c1_0.id,c1_0.created_by,c1_0.created_date,c1_0.email,c1_0.modified_by,c1_0.modified_date,c1_0.name,c1_0.state from customers c1_0 where c1_0.id=?
+Hibernate: select c1_0.id,c1_0.created_by,c1_0.created_date,c1_0.email,c1_0.modified_by,c1_0.modified_date,c1_0.name,c1_0.state from customers c1_0 where c1_0.id=?
+Hibernate: select c1_0.id,c1_0.created_by,c1_0.created_date,c1_0.email,c1_0.modified_by,c1_0.modified_date,c1_0.name,c1_0.state from customers c1_0 where c1_0.id=?
+Hibernate: select c1_0.id,c1_0.created_by,c1_0.created_date,c1_0.email,c1_0.modified_by,c1_0.modified_date,c1_0.name,c1_0.state from customers c1_0 where c1_0.id=?
+Hibernate: select c1_0.id,c1_0.created_by,c1_0.created_date,c1_0.email,c1_0.modified_by,c1_0.modified_date,c1_0.name,c1_0.state from customers c1_0 where c1_0.id=?
+Hibernate: select c1_0.id,c1_0.created_by,c1_0.created_date,c1_0.email,c1_0.modified_by,c1_0.modified_date,c1_0.name,c1_0.state from customers c1_0 offset ? rows fetch first ? rows only
+Hibernate: select o1_0.id,o1_0.created_by,o1_0.created_date,o1_0.customer_id,o1_0.modified_by,o1_0.modified_date,o1_0.order_details,o1_0.restaurant_id,o1_0.state from orders o1_0 where o1_0.customer_id=?
+Hibernate: select o1_0.id,o1_0.created_by,o1_0.created_date,o1_0.customer_id,o1_0.modified_by,o1_0.modified_date,o1_0.order_details,o1_0.restaurant_id,o1_0.state from orders o1_0 where o1_0.customer_id=?
+2026-05-31T14:42:36.253Z  INFO 6 --- [foodndeliv] [nio-8080-exec-5] o.apache.coyote.http11.Http11Processor   : Error parsing HTTP request header
+ Note: further occurrences of HTTP request parsing errors will be logged at DEBUG level.
+
+java.lang.IllegalArgumentException: Invalid character found in the request target [/api/orders/search/findOrdersByCustID?custID={{.JWT.custid}}&custID=1 ]. The valid characters are defined in RFC 7230 and RFC 3986
+        at org.apache.coyote.http11.Http11InputBuffer.parseRequestLine(Http11InputBuffer.java:482) ~[tomcat-embed-core-10.1.28.jar!/:na]
+        at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:257) ~[tomcat-embed-core-10.1.28.jar!/:na]
+        at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-10.1.28.jar!/:na]
+        at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:904) ~[tomcat-embed-core-10.1.28.jar!/:na]
+        at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1741) ~[tomcat-embed-core-10.1.28.jar!/:na]
+        at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-10.1.28.jar!/:na]
+        at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1190) ~[tomcat-embed-core-10.1.28.jar!/:na]
+        at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) ~[tomcat-embed-core-10.1.28.jar!/:na]
+        at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63) ~[tomcat-embed-core-10.1.28.jar!/:na]
+        at java.base/java.lang.Thread.run(Unknown Source) ~[na:na]
+
+Hibernate: select o1_0.id,o1_0.created_by,o1_0.created_date,o1_0.customer_id,o1_0.modified_by,o1_0.modified_date,o1_0.order_details,o1_0.restaurant_id,o1_0.state from orders o1_0 where o1_0.customer_id=?
+Hibernate: select o1_0.id,o1_0.created_by,o1_0.created_date,o1_0.customer_id,o1_0.modified_by,o1_0.modified_date,o1_0.order_details,o1_0.restaurant_id,o1_0.state from orders o1_0 where o1_0.customer_id=?
+Hibernate: select o1_0.id,o1_0.created_by,o1_0.created_date,o1_0.customer_id,o1_0.modified_by,o1_0.modified_date,o1_0.order_details,o1_0.restaurant_id,o1_0.state from orders o1_0 where o1_0.customer_id=?
+Hibernate: select o1_0.id,o1_0.created_by,o1_0.created_date,o1_0.customer_id,o1_0.modified_by,o1_0.modified_date,o1_0.order_details,o1_0.restaurant_id,o1_0.state from orders o1_0 where o1_0.customer_id=?
+Hibernate: select o1_0.id,o1_0.created_by,o1_0.created_date,o1_0.customer_id,o1_0.modified_by,o1_0.modified_date,o1_0.order_details,o1_0.restaurant_id,o1_0.state from orders o1_0 where o1_0.customer_id=?
+Hibernate: select o1_0.id,o1_0.created_by,o1_0.created_date,o1_0.customer_id,o1_0.modified_by,o1_0.modified_date,o1_0.order_details,o1_0.restaurant_id,o1_0.state from orders o1_0 where o1_0.customer_id=?
+Hibernate: select o1_0.id,o1_0.created_by,o1_0.created_date,o1_0.customer_id,o1_0.modified_by,o1_0.modified_date,o1_0.order_details,o1_0.restaurant_id,o1_0.state from orders o1_0 where o1_0.customer_id=?
+Hibernate: select o1_0.id,o1_0.created_by,o1_0.created_date,o1_0.customer_id,o1_0.modified_by,o1_0.modified_date,o1_0.order_details,o1_0.restaurant_id,o1_0.state from orders o1_0 where o1_0.customer_id=?
+dave@dave-ThinkPad-T14-Gen-1:~/Documents/Security/task3/task3a/krakend$ kubectl logs deployment/krakend-deployment
+Found 3 pods, using pod/krakend-deployment-68dd8c55ff-pvfm5
+Parsing configuration file: /etc/krakend/krakend.json
+2026/05/31 14:46:44 KRAKEND INFO: Starting KrakenD v2.7.2
+2026/05/31 14:46:44 KRAKEND INFO: Working directory is /etc/krakend
+2026/05/31 14:46:44 KRAKEND INFO: Starting the KrakenD instance
+2026/05/31 14:46:44 KRAKEND DEBUG: [ENDPOINT: /api/restaurants] Building the proxy pipe
+2026/05/31 14:46:44 KRAKEND DEBUG: [BACKEND: /api/restaurants] Building the backend pipe
+2026/05/31 14:46:44 KRAKEND DEBUG: [BACKEND: /api/restaurants][CB] Creating the circuit breaker named 'cb-getrestaurants'
+2026/05/31 14:46:44 KRAKEND DEBUG: [ENDPOINT: /api/restaurants] Building the http handler
+2026/05/31 14:46:44 KRAKEND DEBUG: [ENDPOINT: /api/restaurants][JWTSigner] Signer disabled
+2026/05/31 14:46:44 KRAKEND DEBUG: [ENDPOINT: /api/restaurants][Ratelimit] Rate limit enabled. MaxRate: 0.083333, Capacity: 1
+2026/05/31 14:46:44 KRAKEND WARNING: [ENDPOINT: /api/restaurants][Ratelimit] Unknown strategy 
+2026/05/31 14:46:44 KRAKEND INFO: [ENDPOINT: /api/restaurants][JWTValidator] Validator disabled for this endpoint
+2026/05/31 14:46:44 KRAKEND DEBUG: [ENDPOINT: /api/restaurants/:id] Building the proxy pipe
+2026/05/31 14:46:44 KRAKEND DEBUG: [BACKEND: /api/restaurants/{{.Id}}] Building the backend pipe
+2026/05/31 14:46:44 KRAKEND DEBUG: [BACKEND: /api/restaurants/{{.Id}}][CB] Creating the circuit breaker named 'cb-getrestaurant'
+2026/05/31 14:46:44 KRAKEND DEBUG: [ENDPOINT: /api/restaurants/:id] Building the http handler
+2026/05/31 14:46:44 KRAKEND DEBUG: [ENDPOINT: /api/restaurants/:id][JWTSigner] Signer disabled
+2026/05/31 14:46:44 KRAKEND DEBUG: [ENDPOINT: /api/restaurants/:id][Ratelimit] Rate limit enabled. MaxRate: 0.083333, Capacity: 1
+2026/05/31 14:46:44 KRAKEND WARNING: [ENDPOINT: /api/restaurants/:id][Ratelimit] Unknown strategy 
+2026/05/31 14:46:44 KRAKEND INFO: [ENDPOINT: /api/restaurants/:id][JWTValidator] Validator disabled for this endpoint
+2026/05/31 14:46:44 KRAKEND DEBUG: [ENDPOINT: /api/orders/search/findOrdersByRestaurantName] Building the proxy pipe
+2026/05/31 14:46:44 KRAKEND DEBUG: [BACKEND: /api/orders/search/findOrdersByRestaurantName] Building the backend pipe
+2026/05/31 14:46:44 KRAKEND DEBUG: [ENDPOINT: /api/orders/search/findOrdersByRestaurantName] Building the http handler
+2026/05/31 14:46:44 KRAKEND DEBUG: [ENDPOINT: /api/orders/search/findOrdersByRestaurantName][JWTSigner] Signer disabled
+2026/05/31 14:46:44 KRAKEND DEBUG: [ENDPOINT: /api/orders/search/findOrdersByRestaurantName][JWTValidator] Roles will be matched against the nested key: 'realm_access.roles'
+2026/05/31 14:46:44 KRAKEND DEBUG: [ENDPOINT: /api/orders/search/findOrdersByRestaurantName][JWTValidator] No scope validation required
+2026/05/31 14:46:44 KRAKEND DEBUG: [ENDPOINT: /api/orders/search/findOrdersByRestaurantName][JWTValidator] Validator enabled for this endpoint
+2026/05/31 14:46:44 KRAKEND DEBUG: [ENDPOINT: /api/customers/:id] Building the proxy pipe
+2026/05/31 14:46:44 KRAKEND DEBUG: [BACKEND: /api/customers/{{.Id}}] Building the backend pipe
+2026/05/31 14:46:44 KRAKEND DEBUG: [ENDPOINT: /api/customers/:id] Building the http handler
+2026/05/31 14:46:44 KRAKEND DEBUG: [ENDPOINT: /api/customers/:id][JWTSigner] Signer disabled
+2026/05/31 14:46:44 KRAKEND DEBUG: [ENDPOINT: /api/customers/:id][JWTValidator] Roles will be matched against the nested key: 'realm_access.roles'
+2026/05/31 14:46:44 KRAKEND DEBUG: [ENDPOINT: /api/customers/:id][JWTValidator] No scope validation required
+2026/05/31 14:46:44 KRAKEND DEBUG: [ENDPOINT: /api/customers/:id][JWTValidator] Validator enabled for this endpoint
+2026/05/31 14:46:44 KRAKEND DEBUG: [ENDPOINT: /api/orders/search/findOrdersByCustID] Building the proxy pipe
+2026/05/31 14:46:44 KRAKEND DEBUG: [BACKEND: /api/orders/search/findOrdersByCustID?custID={{.JWT.custid}}] Building the backend pipe
+2026/05/31 14:46:44 KRAKEND DEBUG: [ENDPOINT: /api/orders/search/findOrdersByCustID] Building the http handler
+2026/05/31 14:46:44 KRAKEND DEBUG: [ENDPOINT: /api/orders/search/findOrdersByCustID][JWTSigner] Signer disabled
+2026/05/31 14:46:44 KRAKEND DEBUG: [ENDPOINT: /api/orders/search/findOrdersByCustID][JWTValidator] Roles will be matched against the nested key: 'realm_access.roles'
+2026/05/31 14:46:44 KRAKEND DEBUG: [ENDPOINT: /api/orders/search/findOrdersByCustID][JWTValidator] No scope validation required
+2026/05/31 14:46:44 KRAKEND DEBUG: [ENDPOINT: /api/orders/search/findOrdersByCustID][JWTValidator] Validator enabled for this endpoint
+2026/05/31 14:46:44 KRAKEND INFO: [SERVICE: Gin] Listening on port: 8080
+2026/05/31 14:46:49 KRAKEND DEBUG: [SERVICE: Telemetry] Registering usage stats for Cluster ID r8DL8cRpZscIhpCjwSsOC2pv46tXfe/0Bt9pHgwsf9Q=
+[GIN] 2026/05/31 - 14:46:53 | 200 |    16.05282ms |      10.244.0.1 | GET      "/api/orders/search/findOrdersByCustID?custID=1"
+[GIN] 2026/05/31 - 14:46:59 | 200 |    8.939653ms |      10.244.0.1 | GET      "/api/orders/search/findOrdersByCustID?custID=2"
