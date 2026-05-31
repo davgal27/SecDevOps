@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: krakend-deployment
+spec:
+  selector:
+    matchLabels:
+      app: apigateway
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: apigateway
+    spec:
+      containers:
+        - name: krakend
+          image: davegalea/foodndeliv-krakend:task3a
+          ports:
+            - containerPort: 8080
+          imagePullPolicy: Always
+          env:
+            - name: KRAKEND_PORT
+              value: "8080"

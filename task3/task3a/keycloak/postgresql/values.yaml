@@ -1,0 +1,6 @@
+global:
+  postgresql:
+    auth:
+      database: keycloak
+      username: keycloak
+      password: keycloakpass

@@ -1,0 +1,98 @@
+{
+  "$schema": "https://www.krakend.io/schema/v2.7/krakend.json",
+  "version": 3,
+  "name": "FoodnDeliv - API Gateway",
+  "timeout": "3000ms",
+  "cache_ttl": "300s",
+  "endpoints": [
+    {
+      "endpoint": "/api/restaurants",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_query_strings": [
+        "page",
+        "size",
+        "sort"
+      ],
+      "extra_config": {
+        "auth/validator": {
+          "alg": "RS256",
+          "roles_key_is_nested": true,
+          "roles_key": "realm_access.roles",
+          "roles": [
+            "customer"
+          ],
+          "jwk_url": "http://gateway-kc-service.keycloak.svc.cluster.local:8080/realms/fnd/protocol/openid-connect/certs",
+          "disable_jwk_security": true,
+          "cache": true
+        },
+        "qos/ratelimit/router": {
+          "max_rate": 50,
+          "every": "10m",
+          "client_max_rate": 5
+        }
+      },
+      "backend": [
+        {
+          "url_pattern": "/api/restaurants",
+          "host": [
+            "http://fnd-task3:8080"
+          ],
+          "method": "GET",
+          "encoding": "no-op",
+          "extra_config": {
+            "qos/circuit-breaker": {
+              "interval": 60,
+              "timeout": 10,
+              "max_errors": 1,
+              "name": "cb-getrestaurants",
+              "log_status_change": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/restaurants/{id}",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "extra_config": {
+        "auth/validator": {
+          "alg": "RS256",
+          "roles_key_is_nested": true,
+          "roles_key": "realm_access.roles",
+          "roles": [
+            "customer"
+          ],
+          "jwk_url": "http://gateway-kc-service.keycloak.svc.cluster.local:8080/realms/fnd/protocol/openid-connect/certs",
+          "disable_jwk_security": true,
+          "cache": true
+        },
+        "qos/ratelimit/router": {
+          "max_rate": 50,
+          "every": "10m",
+          "client_max_rate": 5
+        }
+      },
+      "backend": [
+        {
+          "url_pattern": "/api/restaurants/{id}",
+          "host": [
+            "http://fnd-task3:8080"
+          ],
+          "method": "GET",
+          "encoding": "no-op",
+          "extra_config": {
+            "qos/circuit-breaker": {
+              "interval": 60,
+              "timeout": 10,
+              "max_errors": 1,
+              "name": "cb-getrestaurant",
+              "log_status_change": true
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

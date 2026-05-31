@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fnd-task3
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      tier: frontend
+  template:
+    metadata:
+      labels:
+        tier: frontend
+    spec:
+      containers:
+        - name: foodndeliv
+          image: davegalea/foodndeliv:task3a
+          imagePullPolicy: Always
+          env:
+          - name: DB_HOST
+            value: "fnd-db-rw"
+          - name: DB_PORT
+            value: "5432"
+          - name: DB_NAME
+            valueFrom:
+              secretKeyRef:
+                name: db-secret
+                key: DB_Name
+          - name: DB_USER
+            valueFrom:
+              secretKeyRef:
+                name: db-secret
+                key: DB_USER
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: db-secret
+                key: DB_PASSWORD
+          - name: JAVA_AGENT
+            value: ""
+          - name: IAM_HOST
+            value: "gateway-kc-service.keycloak.svc.cluster.local"
+          - name: IAM_PORT
+            value: "8080"
+          - name: IAM_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: keycloak-admin-secret
+                key: password
+          - name: IAM_CLIENT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: kcsecrets
+                key: kc-client-secret
+                
