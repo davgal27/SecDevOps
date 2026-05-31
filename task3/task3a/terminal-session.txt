@@ -412,15 +412,61 @@ task3a: digest: sha256:0e93c1a6db28af9fbb45c30848de6a389f4fd8356ad8c3b8bd33b4f95
 
 dave@dave-ThinkPad-T14-Gen-1:~/Documents/Security/task3/codebase/docker$ kubectl rollout restart deployment/fnd-task3
 deployment.apps/fnd-task3 restarted
-dave@dave-ThinkPad-T14-Gen-1:~/Documents/Security/task3/codebase/docker$ kubectl get pods 
-NAME                                  READY   STATUS        RESTARTS        AGE
-fnd-db-1                              1/1     Running       1 (3d18h ago)   5d1h
-fnd-db-2                              1/1     Running       1 (3d18h ago)   5d1h
-fnd-db-3                              1/1     Running       1 (3d18h ago)   5d1h
-fnd-ro-b67f56765-9wdfg                1/1     Running       1 (3d18h ago)   4d22h
-fnd-rw-84559864d4-g9q24               1/1     Running       1 (3d18h ago)   4d22h
-fnd-task3-6cd6ccf57c-s57wk            1/1     Terminating   0               14m
-fnd-task3-8566f7f468-7j4l5            1/1     Running       0               5s
-krakend-deployment-6f554cf975-84vhg   1/1     Running       0               9h
-krakend-deployment-6f554cf975-dbs7t   1/1     Running       0               9h
-krakend-deployment-6f554cf975-gxvrq   1/1     Running       0               9h
+
+========================= BREAK OF A FEW DAYS TAKEN ==========================================
+
+
+dave@dave-ThinkPad-T14-Gen-1:~/Documents/Security/task3/task3a/krakend$ docker build -t davegalea/foodndeliv-krakend:task3a .
+[+] Building 2.1s (8/8) FINISHED                                                                 docker:default
+ => [internal] load build definition from Dockerfile                                                       0.0s
+ => => transferring dockerfile: 109B                                                                       0.0s
+ => [internal] load metadata for docker.io/devopsfaith/krakend:2.7                                         1.5s
+ => [auth] devopsfaith/krakend:pull token for registry-1.docker.io                                         0.0s
+ => [internal] load .dockerignore                                                                          0.0s
+ => => transferring context: 2B                                                                            0.0s
+ => [internal] load build context                                                                          0.0s
+ => => transferring context: 4.32kB                                                                        0.0s
+ => CACHED [1/2] FROM docker.io/devopsfaith/krakend:2.7@sha256:e26ca88be6de7803a694d2efdb6ac6fd0637eb1551  0.0s
+ => => resolve docker.io/devopsfaith/krakend:2.7@sha256:e26ca88be6de7803a694d2efdb6ac6fd0637eb155165cf35b  0.0s
+ => [2/2] COPY krakend.json /etc/krakend/krakend.json                                                      0.1s
+ => exporting to image                                                                                     0.3s
+ => => exporting layers                                                                                    0.1s
+ => => exporting manifest sha256:85604f0c0c50925824fa32737acd2ab705ae9133f9e47baa8cf1814ed484f291          0.0s
+ => => exporting config sha256:bcf63401e2dd9a35bcbf4c3c678121251b389552ae817a95771e4e8dd35bc1f8            0.0s
+ => => exporting attestation manifest sha256:9206950bfcd55cf0f2a0def53a62565c9ed2c3752f12b132223eb438f504  0.0s
+ => => exporting manifest list sha256:b4d05e716f1d45a93a1a6640a906c28493f27d668813c0356778fd2b4caa27aa     0.0s
+ => => naming to docker.io/davegalea/foodndeliv-krakend:task3a                                             0.0s
+ => => unpacking to docker.io/davegalea/foodndeliv-krakend:task3a                                          0.0s
+dave@dave-ThinkPad-T14-Gen-1:~/Documents/Security/task3/task3a/krakend$ docker push davegalea/foodndeliv-krakend:task3a
+The push refers to repository [docker.io/davegalea/foodndeliv-krakend]
+02409c41c84d: Layer already exists 
+d6a6564be9de: Layer already exists 
+f3341af1aac3: Pushed 
+d5b144ce62b8: Pushed 
+63e0028eeb6c: Layer already exists 
+179c49d5afb3: Layer already exists 
+94c7366c1c30: Layer already exists 
+task3a: digest: sha256:b4d05e716f1d45a93a1a6640a906c28493f27d668813c0356778fd2b4caa27aa size: 856
+dave@dave-ThinkPad-T14-Gen-1:~/Documents/Security/task3/task3a/krakend$ kubectl rollout restart deployment/krakend-development
+Error from server (NotFound): deployments.apps "krakend-development" not found
+dave@dave-ThinkPad-T14-Gen-1:~/Documents/Security/task3/task3a/krakend$ kubectl rollout restart deployment/krakend-deployment
+deployment.apps/krakend-deployment restarted
+dave@dave-ThinkPad-T14-Gen-1:~/Documents/Security/task3/task3a/krakend$ kubecdtl rollout status deployment/krakend-deployment
+Command 'kubecdtl' not found, did you mean:
+  command 'kubectl' from snap kubectl (1.35.5)
+See 'snap info <snapname>' for additional versions.
+dave@dave-ThinkPad-T14-Gen-1:~/Documents/Security/task3/task3a/krakend$ kubectl rollout status deployment/kraken
+d-deployment
+deployment "krakend-deployment" successfully rolled out
+
+dave@dave-ThinkPad-T14-Gen-1:~/Documents/Security$ kubectl get pods
+NAME                                  READY   STATUS    RESTARTS       AGE
+fnd-db-1                              1/1     Running   2 (3d3h ago)   11d
+fnd-db-2                              1/1     Running   2 (3d3h ago)   11d
+fnd-db-3                              1/1     Running   2 (3d3h ago)   11d
+fnd-ro-b67f56765-9wdfg                1/1     Running   2 (3d3h ago)   10d
+fnd-rw-84559864d4-g9q24               1/1     Running   2 (3d3h ago)   10d
+fnd-task3-8566f7f468-7j4l5            1/1     Running   1 (3d3h ago)   6d
+krakend-deployment-6f554cf975-84vhg   1/1     Running   1 (3d3h ago)   6d9h
+krakend-deployment-6f554cf975-dbs7t   1/1     Running   1 (3d3h ago)   6d9h
+krakend-deployment-6f554cf975-gxvrq   1/1     Running   1 (3d3h ago)   6d9h 

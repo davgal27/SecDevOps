@@ -15,17 +15,6 @@
         "sort"
       ],
       "extra_config": {
-        "auth/validator": {
-          "alg": "RS256",
-          "roles_key_is_nested": true,
-          "roles_key": "realm_access.roles",
-          "roles": [
-            "customer"
-          ],
-          "jwk_url": "http://gateway-kc-service.keycloak.svc.cluster.local:8080/realms/fnd/protocol/openid-connect/certs",
-          "disable_jwk_security": true,
-          "cache": true
-        },
         "qos/ratelimit/router": {
           "max_rate": 50,
           "every": "10m",
@@ -57,17 +46,6 @@
       "method": "GET",
       "output_encoding": "no-op",
       "extra_config": {
-        "auth/validator": {
-          "alg": "RS256",
-          "roles_key_is_nested": true,
-          "roles_key": "realm_access.roles",
-          "roles": [
-            "customer"
-          ],
-          "jwk_url": "http://gateway-kc-service.keycloak.svc.cluster.local:8080/realms/fnd/protocol/openid-connect/certs",
-          "disable_jwk_security": true,
-          "cache": true
-        },
         "qos/ratelimit/router": {
           "max_rate": 50,
           "every": "10m",
@@ -91,6 +69,93 @@
               "log_status_change": true
             }
           }
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/orders/search/findOrdersByRestaurantName",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_query_strings": [
+        "restaurantName"
+      ],
+      "extra_config": {
+        "auth/validator": {
+          "alg": "RS256",
+          "roles_key_is_nested": true,
+          "roles_key": "realm_access.roles",
+          "roles": [
+            "admin"
+          ],
+          "jwk_url": "http://gateway-kc-service.keycloak.svc.cluster.local:8080/realms/fnd/protocol/openid-connect/certs",
+          "disable_jwk_security": true,
+          "cache": true
+        }
+      },
+      "backend": [
+        {
+          "url_pattern": "/api/orders/search/findOrdersByRestaurantName",
+          "host": [
+            "http://fnd-task3:8080"
+          ],
+          "method": "GET",
+          "encoding": "no-op"
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/customers/{id}",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "extra_config": {
+        "auth/validator": {
+          "alg": "RS256",
+          "roles_key_is_nested": true,
+          "roles_key": "realm_access.roles",
+          "roles": [
+            "customer"
+          ],
+          "jwk_url": "http://gateway-kc-service.keycloak.svc.cluster.local:8080/realms/fnd/protocol/openid-connect/certs",
+          "disable_jwk_security": true,
+          "cache": true
+        }
+      },
+      "backend": [
+        {
+          "url_pattern": "/api/customers/{id}",
+          "host": [
+            "http://fnd-task3:8080"
+          ],
+          "method": "GET",
+          "encoding": "no-op"
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/orders/search/findOrdersByCustID",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "extra_config": {
+        "auth/validator": {
+          "alg": "RS256",
+          "roles_key_is_nested": true,
+          "roles_key": "realm_access.roles",
+          "roles": [
+            "customer"
+          ],
+          "jwk_url": "http://gateway-kc-service.keycloak.svc.cluster.local:8080/realms/fnd/protocol/openid-connect/certs",
+          "disable_jwk_security": true,
+          "cache": true
+        }
+      },
+      "backend": [
+        {
+          "url_pattern": "/api/orders/search/findOrdersByCustID?custID={JWT.custid}",
+          "host": [
+            "http://fnd-task3:8080"
+          ],
+          "method": "GET",
+          "encoding": "no-op"
         }
       ]
     }
