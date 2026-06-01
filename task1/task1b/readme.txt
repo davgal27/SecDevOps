@@ -33,7 +33,8 @@ Steps for reporduction of task:
 1. Build both Maven projects:
 mvn clean compile test package
     
-Note: for the first build of the Read-Write version, in task1/task1b/app-rw/src/main/resources/application.properties, set spring.jpa.hibernate.ddl-auto=update, so that the database schema can be created.
+Note: for the first build of the Read-Write version, in task1/task1b/app-rw/src/main/resources/application.properties,
+set spring.jpa.hibernate.ddl-auto=update, so that the database schema can be created.
 
 2. Build and push Docker images:
 docker build -f docker/Dockerfile -t davegalea/foodndeliv-rw:task1b ./app-rw

@@ -1,0 +1,217 @@
+dave@dave-ThinkPad-T14-Gen-1:~/Documents/Security$ cd task3
+dave@dave-ThinkPad-T14-Gen-1:~/Documents/Security/task3$ cd codebase
+dave@dave-ThinkPad-T14-Gen-1:~/Documents/Security/task3/codebase$ mvn clean compile test package
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -----------------------< com.example:foodndeliv >-----------------------
+[INFO] Building foodndeliv 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.3.2:clean (default-clean) @ foodndeliv ---
+[INFO] Deleting /home/dave/Documents/Security/task3/codebase/target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ foodndeliv ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.13.0:compile (default-compile) @ foodndeliv ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 33 source files with javac [debug parameters release 17] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ foodndeliv ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.13.0:compile (default-compile) @ foodndeliv ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 33 source files with javac [debug parameters release 17] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ foodndeliv ---
+[INFO] skip non existing resourceDirectory /home/dave/Documents/Security/task3/codebase/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ foodndeliv ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] 
+[INFO] --- surefire:3.2.5:test (default-test) @ foodndeliv ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ foodndeliv ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.13.0:compile (default-compile) @ foodndeliv ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 33 source files with javac [debug parameters release 17] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ foodndeliv ---
+[INFO] skip non existing resourceDirectory /home/dave/Documents/Security/task3/codebase/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ foodndeliv ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] 
+[INFO] --- surefire:3.2.5:test (default-test) @ foodndeliv ---
+[INFO] Skipping execution of surefire because it has already been run for this configuration
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ foodndeliv ---
+[INFO] Building jar: /home/dave/Documents/Security/task3/codebase/target/foodndeliv-0.0.1-SNAPSHOT.jar
+[INFO] 
+[INFO] --- spring-boot:3.3.3:repackage (repackage) @ foodndeliv ---
+[INFO] Replacing main artifact /home/dave/Documents/Security/task3/codebase/target/foodndeliv-0.0.1-SNAPSHOT.jar with repackaged archive, adding nested dependencies in BOOT-INF/.
+[INFO] The original artifact has been renamed to /home/dave/Documents/Security/task3/codebase/target/foodndeliv-0.0.1-SNAPSHOT.jar.original
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  9.223 s
+[INFO] Finished at: 2026-05-31T23:26:54+02:00
+[INFO] ------------------------------------------------------------------------
+dave@dave-ThinkPad-T14-Gen-1:~/Documents/Security/task3/codebase$ docker build -t davegalea/foodndeliv-task3bi .
+[+] Building 0.1s (1/1) FINISHED                                            docker:default
+ => [internal] load build definition from Dockerfile                                  0.0s
+ => => transferring dockerfile: 2B                                                    0.0s
+ERROR: failed to build: failed to solve: failed to read dockerfile: open Dockerfile: no such file or directory
+dave@dave-ThinkPad-T14-Gen-1:~/Documents/Security/task3/codebase$ cd docker
+dave@dave-ThinkPad-T14-Gen-1:~/Documents/Security/task3/codebase/docker$ docker build -t davegalea/foodndeliv-task3bi .
+[+] Building 1.4s (9/9) FINISHED                                            docker:default
+ => [internal] load build definition from Dockerfile                                  0.0s
+ => => transferring dockerfile: 1.29kB                                                0.0s
+ => [internal] load metadata for docker.io/library/eclipse-temurin:17-jre             1.0s
+ => [internal] load .dockerignore                                                     0.0s
+ => => transferring context: 2B                                                       0.0s
+ => [1/4] FROM docker.io/library/eclipse-temurin:17-jre@sha256:0d79988c68791ce864fe3  0.0s
+ => => resolve docker.io/library/eclipse-temurin:17-jre@sha256:0d79988c68791ce864fe3  0.0s
+ => [internal] load build context                                                     0.0s
+ => => transferring context: 135B                                                     0.0s
+ => CACHED [2/4] WORKDIR /app                                                         0.0s
+ => CACHED [3/4] COPY target/foodndeliv-0.0.1-SNAPSHOT.jar /app/foodndeliv.jar        0.0s
+ => CACHED [4/4] COPY opentelemetry-javaagent.jar /app/opentelemetry-javaagent.jar    0.0s
+ => exporting to image                                                                0.2s
+ => => exporting layers                                                               0.0s
+ => => exporting manifest sha256:c98b4eed4c8932ac828119134ec6d43c2d214f29edd657f95a1  0.0s
+ => => exporting config sha256:7d6e6669fa4c06b621720613661836d81ae08c7bcbfbf3346752c  0.0s
+ => => exporting attestation manifest sha256:793a1b1090699104e1b3a17534e94ff05cb7bc2  0.0s
+ => => exporting manifest list sha256:c9648cd6cf9dabcd5cde12c30b19ba3f0a630b7878818b  0.0s
+ => => naming to docker.io/davegalea/foodndeliv-task3bi:latest                        0.0s
+ => => unpacking to docker.io/davegalea/foodndeliv-task3bi:latest                     0.0s
+dave@dave-ThinkPad-T14-Gen-1:~/Documents/Security/task3/codebase/docker$ docker push davegalea/foodndeliv-task3bi
+Using default tag: latest
+The push refers to repository [docker.io/davegalea/foodndeliv-task3bi]
+1a165e727980: Layer already exists 
+df239344eba9: Pushed 
+c343b401b0a7: Layer already exists 
+b489590d6e55: Layer already exists 
+117c44795015: Layer already exists 
+6f5c5aa4e145: Layer already exists 
+7ad9de4d5a05: Layer already exists 
+1c24335ddd46: Layer already exists 
+8d16f6cca2ad: Layer already exists 
+22cf292cd3e5: Layer already exists 
+latest: digest: sha256:c9648cd6cf9dabcd5cde12c30b19ba3f0a630b7878818ba23b7e5f4eeeaa2e87 size: 856
+dave@dave-ThinkPad-T14-Gen-1:~/Documents/Security/task3/codebase/docker$ kubectl rollout restart deployment/fnd-task3
+deployment.apps/fnd-task3 restarted
+
+dave@dave-ThinkPad-T14-Gen-1:~/Documents/Security/task3/codebase$ mvn clean compile test package
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -----------------------< com.example:foodndeliv >-----------------------
+[INFO] Building foodndeliv 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.3.2:clean (default-clean) @ foodndeliv ---
+[INFO] Deleting /home/dave/Documents/Security/task3/codebase/target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ foodndeliv ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.13.0:compile (default-compile) @ foodndeliv ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 33 source files with javac [debug parameters release 17] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ foodndeliv ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.13.0:compile (default-compile) @ foodndeliv ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 33 source files with javac [debug parameters release 17] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ foodndeliv ---
+[INFO] skip non existing resourceDirectory /home/dave/Documents/Security/task3/codebase/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ foodndeliv ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] 
+[INFO] --- surefire:3.2.5:test (default-test) @ foodndeliv ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ foodndeliv ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.13.0:compile (default-compile) @ foodndeliv ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 33 source files with javac [debug parameters release 17] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ foodndeliv ---
+[INFO] skip non existing resourceDirectory /home/dave/Documents/Security/task3/codebase/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ foodndeliv ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] 
+[INFO] --- surefire:3.2.5:test (default-test) @ foodndeliv ---
+[INFO] Skipping execution of surefire because it has already been run for this configuration
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ foodndeliv ---
+[INFO] Building jar: /home/dave/Documents/Security/task3/codebase/target/foodndeliv-0.0.1-SNAPSHOT.jar
+[INFO] 
+[INFO] --- spring-boot:3.3.3:repackage (repackage) @ foodndeliv ---
+[INFO] Replacing main artifact /home/dave/Documents/Security/task3/codebase/target/foodndeliv-0.0.1-SNAPSHOT.jar with repackaged archive, adding nested dependencies in BOOT-INF/.
+[INFO] The original artifact has been renamed to /home/dave/Documents/Security/task3/codebase/target/foodndeliv-0.0.1-SNAPSHOT.jar.original
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  12.784 s
+[INFO] Finished at: 2026-06-01T00:12:32+02:00
+[INFO] ------------------------------------------------------------------------
+dave@dave-ThinkPad-T14-Gen-1:~/Documents/Security/task3/codebase$ cd docker
+dave@dave-ThinkPad-T14-Gen-1:~/Documents/Security/task3/codebase/docker$ docker build -t davegalea/foodndeliv-task3bii .
+[+] Building 1.4s (10/10) FINISHED                                          docker:default
+ => [internal] load build definition from Dockerfile                                  0.0s
+ => => transferring dockerfile: 1.29kB                                                0.0s
+ => [internal] load metadata for docker.io/library/eclipse-temurin:17-jre             1.0s
+ => [auth] library/eclipse-temurin:pull token for registry-1.docker.io                0.0s
+ => [internal] load .dockerignore                                                     0.0s
+ => => transferring context: 2B                                                       0.0s
+ => [1/4] FROM docker.io/library/eclipse-temurin:17-jre@sha256:0d79988c68791ce864fe3  0.0s
+ => => resolve docker.io/library/eclipse-temurin:17-jre@sha256:0d79988c68791ce864fe3  0.0s
+ => [internal] load build context                                                     0.0s
+ => => transferring context: 135B                                                     0.0s
+ => CACHED [2/4] WORKDIR /app                                                         0.0s
+ => CACHED [3/4] COPY target/foodndeliv-0.0.1-SNAPSHOT.jar /app/foodndeliv.jar        0.0s
+ => CACHED [4/4] COPY opentelemetry-javaagent.jar /app/opentelemetry-javaagent.jar    0.0s
+ => exporting to image                                                                0.2s
+ => => exporting layers                                                               0.0s
+ => => exporting manifest sha256:c98b4eed4c8932ac828119134ec6d43c2d214f29edd657f95a1  0.0s
+ => => exporting config sha256:7d6e6669fa4c06b621720613661836d81ae08c7bcbfbf3346752c  0.0s
+ => => exporting attestation manifest sha256:9e1646561047915cad85b6171ef1dd451a0f9a2  0.1s
+ => => exporting manifest list sha256:141f6e3d821ea2b656d6ce67793ef883756f536d91c674  0.0s
+ => => naming to docker.io/davegalea/foodndeliv-task3bii:latest                       0.0s
+ => => unpacking to docker.io/davegalea/foodndeliv-task3bii:latest                    0.0s
+dave@dave-ThinkPad-T14-Gen-1:~/Documents/Security/task3/codebase/docker$ docker push davegalea/foodndeliv-task3bii
+Using default tag: latest
+The push refers to repository [docker.io/davegalea/foodndeliv-task3bii]
+1c24335ddd46: Mounted from davegalea/foodndeliv-task3bi 
+22cf292cd3e5: Mounted from davegalea/foodndeliv-task3bi 
+1a165e727980: Mounted from davegalea/foodndeliv-task3bi 
+b489590d6e55: Mounted from davegalea/foodndeliv-task3bi 
+117c44795015: Mounted from davegalea/foodndeliv-task3bi 
+8d16f6cca2ad: Mounted from davegalea/foodndeliv-task3bi 
+6f5c5aa4e145: Mounted from davegalea/foodndeliv-task3bi 
+7ad9de4d5a05: Mounted from davegalea/foodndeliv-task3bi 
+c343b401b0a7: Mounted from davegalea/foodndeliv-task3bi 
+fc107d6f378f: Pushed 
+latest: digest: sha256:141f6e3d821ea2b656d6ce67793ef883756f536d91c674e65a6058ab6f4ca68a size: 856
+dave@dave-ThinkPad-T14-Gen-1:~/Documents/Security/task3/codebase/docker$ kubectl set image deployment/fnd-task3 foodndeliv=davegalea/foodndeliv-task3bii
+deployment.apps/fnd-task3 image updated
+dave@dave-ThinkPad-T14-Gen-1:~/Documents/Security/task3/codebase/docker$ kubectl rollout restart deployment/fnd-task3
+deployment.apps/fnd-task3 restarted

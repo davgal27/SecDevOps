@@ -1,6 +1,6 @@
 Task 3a: Deploy a Secured API Gateway using KrakenD and Keycloak
 
-fnd-task3: FoodNDeliv API backend connected to the CNPG database.
+- fnd-task3: FoodNDeliv API backend connected to the CNPG database.
 
 Files:
 - ../codebase/
@@ -78,6 +78,10 @@ kubectl create secret tls keycloak-tls-secret -n keycloak \
 kubectl create secret generic keycloak-db-secret -n keycloak \
   --from-literal=username=keycloak
 
+# Keycloak admin and client secrets
+kubectl apply -f yamls/keycloak-admin-secret.yaml -n keycloak
+kubectl apply -f yamls/kcsecrets.yaml
+
 4. Deploy Keycloak:
 kubectl apply -f yamls/keycloak.yaml -n keycloak
 kubectl apply -f yamls/keycloak-service.yaml -n keycloak
@@ -109,6 +113,10 @@ cd docker
 docker build -t davegalea/foodndeliv:task3a .
 docker push davegalea/foodndeliv:task3a
 kubectl rollout restart deployment/fnd-task3
+
+Note: for the first build, in task3/codebase/src/main/resources/application.properties,
+set spring.jpa.hibernate.ddl-auto=update, so that the database schema can be created.
+Afterwards, repeat this process with auto=none. 
 
 9. Build and push KrakenD:
 cd task3a/krakend

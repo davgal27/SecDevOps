@@ -1,6 +1,10 @@
 package com.example.foodndeliv.entity;
 
+
+import main.java.com.example.foodndeliv.entitylistener.RestaurantPostLoadListener;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -17,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "restaurants")
-@EntityListeners(AuditingEntityListener.class)
+@EntityListeners({AuditingEntityListener.class, RestaurantPostLoadListener.class})
 @Data
 @NoArgsConstructor
 public class Restaurant {
@@ -27,9 +31,13 @@ public class Restaurant {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "name", nullable = false, unique = true, length=30)
+    @NotBlank(message = "Name cannot be blank") @Size(max = 30, message = "Name max length exceeded")
+    @Pattern(regexp = "^[a-zA-Z0-9\\s]*$", message = "Invalid Name")
+    @Column(name = "name", nullable = false, unique = true, length = 30)
     private String name;
 
+    @NotBlank(message = "Address cannot be blank") @Size(max =30, message = "Address max length exceeded")
+    @Pattern(regexp = "^[a-zA-Z0-9\\s,.'-]*$", message = "Invalid Address")
     @Column(name = "address", nullable = false, length=30)
     private String address;
 
@@ -37,6 +45,7 @@ public class Restaurant {
     @JsonIgnore
     private List<Order> orders;
 
+    @NotNull(message = "Restaurant state is required")
     @Enumerated(EnumType.STRING)
     @Column(name = "state", nullable = false)
     private RestaurantState state;

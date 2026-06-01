@@ -74,6 +74,7 @@ public class OrderService {
         order.setCustomer(customer);
         order.setRestaurant(restaurant);
         order.setState(OrderState.OPEN);
+        order.setOrderDetails(orderRequestDTO.orderDetails());
 
         List<OrderLine> orderLines = new ArrayList<>();
 
@@ -84,6 +85,15 @@ public class OrderService {
 
         orderLines.forEach(orderLine -> orderLine.setOrder(order));
         order.setOrderLines(orderLines);
+
+        //total calcualtion for orders
+        double ordertotal = 0;
+
+        for (OrderLineDTO line : orderRequestDTO.orderLines()) {
+                // for each line, see how much there is in quantity and multiply by price
+                ordertotal = ordertotal + (line.getQuantity() * line.getPrice());
+        }
+        order.setTotalPrice(ordertotal);
 
         Order newOrder = orderRepository.save(order);
 
