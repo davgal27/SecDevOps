@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.*;
 
@@ -35,6 +36,9 @@ public class CustomerService {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    private HttpServletRequest request;
 
     @Autowired
     Keycloak keycloak;
@@ -99,6 +103,18 @@ public class CustomerService {
 
     @Transactional
     public CustomerResponseDTO updateCustomer(Long id, CustomerUpdateDTO customerUpdateDTO) {
+        String custId = request.getHeader("X-Custid");
+        if(custId != null)
+        {
+            //Check JWT ID matches Customer
+            if( !custId.equals(id.toString()) )
+            {
+                throw new DomainInvariantException("Only account owners can deactivate their accounts");
+            }
+        } else {
+            // Halt due to missing JWT id
+            throw new DomainInvariantException("Only account owners can deactivate their accounts");
+        }
 
         Customer customer = customerRepository.findById(id)
         .orElseThrow(() -> new DomainInvariantException("Customer not found"));
@@ -108,27 +124,19 @@ public class CustomerService {
         modelMapper.map(customerUpdateDTO, customer);
 
         //Domain invariant - An Inactive Customer is not associated with pending orders
-        if(customer.getState()== CustomerState.INACTIVE){ 
+        if(customer.getState() == CustomerState.INACTIVE) {
 
-           List<Order> orderlist = orderRepository.findOrdersByCustID(id);
+            List<Order> orderlist = orderRepository.findOrdersByCustID(id);
 
-           if (orderlist != null) {
+            if (orderlist != null) {
 
-                //Cannot deactivate a customer in case of any non-cancellable orders
-                for( var order : orderlist ) {
-                    if(order.getState() == OrderState.CONFIRMED ) {
-                        throw new DomainInvariantException("Cannot deactivate: Pending confirmed orders");
+                //Cannot deactivate a customer in case of any pending orders
+                for(var order : orderlist) {
+                    if(order.getState() == OrderState.OPEN || order.getState() == OrderState.CONFIRMED) {
+                        throw new DomainInvariantException("Cannot deactivate: Pending orders");
                     }
                 }
-
-                //Cancel all cancellable orders 
-                for( var order : orderlist )
-                {
-                    if((order.getState() == OrderState.OPEN) || (order.getState() == OrderState.CONFIRMED)) {
-                        order.setState(OrderState.CANCELLED);
-                    }
-                }
-           }
+            }
         }
 
         //Update in KeyCloak based on state, throwing a RuntimeException on failure

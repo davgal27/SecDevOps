@@ -159,5 +159,125 @@
         }
       ]
     }
+    
+    
+    
+    
+    
+    ,
+    {
+      "endpoint": "/api/ctrl/restaurants/{id}",
+      "method": "PUT",
+      "output_encoding": "no-op",
+      "extra_config": {
+        "auth/validator": {
+          "alg": "RS256",
+          "roles_key_is_nested": true,
+          "roles_key": "realm_access.roles",
+          "roles": [
+            "admin"
+          ],
+          "jwk_url": "http://gateway-kc-service.keycloak.svc.cluster.local:8080/realms/fnd/protocol/openid-connect/certs",
+          "cache": true,
+          "disable_jwk_security": true
+        }
+      },
+      "input_headers": [
+        "Accept-Encoding",
+        "User-Agent",
+        "Content-Type"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/ctrl/restaurants/{id}",
+          "host": [
+            "http://fnd-task3:8080"
+          ],
+          "method": "PUT",
+          "encoding": "no-op"
+        }
+      ]
+    }
+    ,
+    {
+      "endpoint": "/api/ctrl/orders",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "extra_config": {
+        "auth/validator": {
+          "alg": "RS256",
+          "roles_key_is_nested": true,
+          "roles_key": "realm_access.roles",
+          "roles": [
+            "customer"
+          ],
+          "jwk_url": "http://gateway-kc-service.keycloak.svc.cluster.local:8080/realms/fnd/protocol/openid-connect/certs",
+          "cache": true,
+          "disable_jwk_security": true,
+          "propagate_claims": [
+            [
+              "custid",
+              "x-custid"
+            ]
+          ]
+        }
+      },
+      "input_headers": [
+        "x-custid",
+        "Accept-Encoding",
+        "User-Agent",
+        "Content-Type"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/ctrl/orders",
+          "host": [
+            "http://fnd-task3:8080"
+          ],
+          "method": "POST",
+          "encoding": "no-op"
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/ctrl/customers/{id}",
+      "method": "PUT",
+      "output_encoding": "no-op",
+      "extra_config": {
+        "auth/validator": {
+          "alg": "RS256",
+          "roles_key_is_nested": true,
+          "roles_key": "realm_access.roles",
+          "roles": [
+            "customer"
+          ],
+          "jwk_url": "http://gateway-kc-service.keycloak.svc.cluster.local:8080/realms/fnd/protocol/openid-connect/certs",
+          "cache": true,
+          "disable_jwk_security": true,
+          "propagate_claims": [
+            [
+              "custid",
+              "x-custid"
+            ]
+          ]
+        }
+      },
+      "input_headers": [
+        "x-custid",
+        "Accept-Encoding",
+        "User-Agent",
+        "Content-Type"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/api/ctrl/customers/{id}",
+          "host": [
+            "http://fnd-task3:8080"
+          ],
+          "method": "PUT",
+          "encoding": "no-op"
+        }
+      ]
+    }   
   ]
 }

@@ -50,6 +50,9 @@ Files:
 
     - krakend-service.yaml         
       xposes KrakenD as a LoadBalancer service on port 31028.
+
+- terminal-session.txt
+  Contains the full raw terminal dump outputted while performing this task 
 ==============================================================
 
 Steps for reproduction of task:
